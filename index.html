@@ -3,351 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>কৃষি বাজার - অনলাইন অর্গানিক শপ</title>
+    <title>UrbanMati - আরবান মাটি | ছাদবাগান ও অর্গানিক কৃষি উপকরণ</title>
+    <!-- Tailwind CSS (ডিজাইন এর জন্য) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bangla Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            padding-bottom: 50px;
-        }
-
-        header {
-            background-color: #2e7d32;
-            color: white;
-            text-align: center;
-            padding: 20px 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Product Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-
-        .product-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .product-price {
-            color: #2e7d32;
-            font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
-
-        .btn-add {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 14px;
-        }
-
-        .btn-add:hover {
-            background-color: #1b5e20;
-        }
-
-        /* Cart & Checkout Section */
-        .checkout-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            height: fit-content;
-        }
-
-        .checkout-section h2 {
-            font-size: 18px;
-            color: #2e7d32;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .cart-item button {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 2px 6px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .total-price {
-            font-weight: bold;
-            font-size: 16px;
-            margin: 15px 0;
-            text-align: right;
-            color: #d32f2f;
-        }
-
-        /* Order Form */
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #128C7E;
-        }
+        body { font-family: 'Hind Siliguri', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-emerald-50/40 min-h-screen flex flex-col justify-between text-gray-800">
 
-    <header>
-        <h1>🌱 অর্গানিক কৃষি বাজার</h1>
-        <p>সরাসরি ক্ষেত থেকে তাজা ও পুষ্টিকর পণ্য</p>
+    <!-- Header / Navbar -->
+    <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-mx-auto max-w-6xl px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-white text-emerald-700 p-2 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl shadow">🌱</div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wide">UrbanMati <span class="text-xs bg-emerald-800 px-2 py-0.5 rounded-full text-emerald-200">আরবান মাটি</span></h1>
+                    <p class="text-xs text-emerald-100">ছাদবাগান ও আধুনিক বাগানপ্রেমীদের বিশ্বাসস্ত সঙ্গি</p>
+                </div>
+            </div>
+            <div class="text-right hidden sm:block">
+                <span class="text-xs bg-emerald-800 text-emerald-200 px-3 py-1 rounded-full"><i class="fa-solid me-1">📍</i> বগুড়া, বাংলাদেশ</span>
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-        <!-- Product List -->
-        <div class="products-grid" id="productGrid">
-            <!-- JavaScript-এর মাধ্যমে প্রোডাক্টগুলো এখানে লোড হবে -->
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-emerald-800 to-green-700 text-white py-10 px-4 shadow-inner">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">আপনার ছাদবাগান সাজুক সেরা অর্গানিক উপকণে</h2>
+            <p class="text-emerald-100 text-base sm:text-lg mb-6">১০০% অর্গানিক কেঁচো সার, প্রস্তুতকৃত গোবর সার, মাটির টব ও বাগান তৈরির নিত্যপ্রয়োজনীয় সামগ্রী।</p>
+            <a href="#products" class="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-bold px-6 py-2.5 rounded-full transition shadow-lg inline-flex items-center gap-2">
+                <i class="fa-solid fa-basket-shopping"></i> প্রোডাক্ট দেখুন
+            </a>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <main id="products" class="max-w-6xl mx-auto px-4 py-12 flex-grow">
+        <div class="text-center mb-10">
+            <h3 class="text-2xl font-bold text-emerald-900 border-b-4 border-emerald-600 inline-block pb-1">আমাদের প্রোডাক্টসমূহ</h3>
+            <p class="text-gray-600 text-sm mt-2">পছন্দের প্রোডাক্টের পরিমাণ নির্বাচন করে সরাসরি হোয়াটসঅ্যাপে অর্ডার দিন</p>
         </div>
 
-        <!-- Cart and Checkout Form -->
-        <div class="checkout-section">
-            <h2>🛒 আপনার শপিং কার্ট</h2>
-            <div id="cartItems">
-                <p style="color: #777; font-size: 14px;">কার্ট বর্তমানে খালি রয়েছে।</p>
+        <!-- Dynamic Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- JavaScript দিয়ে প্রোডাক্ট এখানে যুক্ত হবে -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-emerald-900 text-emerald-100 py-8 px-4 mt-12 border-t border-emerald-800">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <div>
+                <h4 class="text-xl font-bold text-white mb-1">UrbanMati (আরবান মাটি)</h4>
+                <p class="text-xs text-emerald-300">গুণগত মানের সার, টব ও বাগান সামগ্রী সরবরাহে প্রতিশ্রুতিবদ্ধ।</p>
             </div>
-            <div class="total-price" id="totalPrice">মোট: ৳০</div>
-
-            <h2>📋 কাস্টマー তথ্য</h2>
-            <form id="orderForm" onsubmit="sendWhatsAppOrder(event)">
-                <div class="form-group">
-                    <label for="name">আপনার নাম *</label>
-                    <input type="text" id="name" placeholder="যেমন: মোঃ রহিম" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">মোবাইল নম্বর *</label>
-                    <input type="tel" id="phone" placeholder="যেমন: 01700000000" required>
-                </div>
-                <div class="form-group">
-                    <label for="address">পূর্ণাঙ্গ ঠিকানা *</label>
-                    <textarea id="address" rows="2" placeholder="বাড়ি/রোড নম্বর, থানা, জেলা" required></textarea>
-                </div>
-                <button type="submit" class="btn-whatsapp">
-                    📲 WhatsApp-এ অর্ডার করুন
-                </button>
-            </form>
+            <div class="text-sm">
+                <p><i class="fa-brands fa-whatsapp text-green-400 text-base mr-1"></i> হোয়াটসঅ্যাপ সাপোর্ট: <span id="display-phone" class="font-semibold text-white"></span></p>
+                <p class="text-xs text-emerald-400 mt-1">স্থান: বগুড়া সদর, বগুড়া, বাংলাদেশ</p>
+            </div>
         </div>
-    </div>
+        <div class="text-center text-xs text-emerald-400 border-t border-emerald-800 mt-6 pt-4">
+            &copy; 2026 UrbanMati. All rights reserved. Built for Garden Lovers.
+        </div>
+    </footer>
 
+    <!-- JavaScript Logic -->
     <script>
-        // ১. আপনার হোয়াটসঅ্যাপ নম্বর (৮৮০ সহ লিখুন)
-        const MY_WHATSAPP_NUMBER = "8801700000000"; // <-- এখানে আপনার নম্বর দিন
+        // ===================================================
+        // ⚙️ ১. আপনার তথ্য কাস্টমাইজ করুন
+        // ===================================================
+        const whatsappNumber = "8801700000000"; // আপনার ৮৮০ সহ হোয়াটসঅ্যাপ নম্বর দিন (যেমন: 8801712345678)
 
-        // ২. আপনার প্রোডাক্টের তালিকা (প্রয়োজন অনুযায়ী পরিবর্তন করুন)
+        // ===================================================
+        // 📦 ২. আপনার প্রোডাক্ট লিস্ট (এখান থেকেই যুক্ত/পরিবর্তন করবেন)
+        // ===================================================
         const products = [
-            { id: 1, name: "তাজা টমেটো (১ কেজি)", price: 60, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300" },
-            { id: 2, name: "দেশি শসা (১ কেজি)", price: 50, image: "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=300" },
-            { id: 3, name: "জৈব সার (১ বস্তা)", price: 350, image: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=300" },
-            { id: 4, name: "হাইব্রিড মরিচ বীজ (১০ গ্রাম)", price: 120, image: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=300" }
+            {
+                id: 1,
+                name: "প্রিমিয়াম ভার্মিকম্পোস্ট (কেঁচো সার)",
+                category: "জৈব সার",
+                price: 50, // টাকা
+                unit: "কেজি",
+                image: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=500&auto=format&fit=crop",
+                description: "১০০% খাঁটি পচানো কেঁচো সার। গাছের দ্রুত বৃদ্ধি ও ফলনের জন্য অপরিহার্য।"
+            },
+            {
+                id: 2,
+                name: "শুকনো ড্রাইড গোবর সার",
+                category: "জৈব সার",
+                price: 35,
+                unit: "কেজি",
+                image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=500&auto=format&fit=crop",
+                description: "সম্পূর্ণ দুর্গন্ধমুক্ত ও প্রসেস করা শুষ্ক গোবর সার।"
+            },
+            {
+                id: 3,
+                name: "প্লাস্টিক ড্রেনেজ টব (৮ ইঞ্চি)",
+                category: "টব ও পাত্র",
+                price: 80,
+                unit: "পিস",
+                image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&auto=format&fit=crop",
+                description: "দীর্ঘস্থায়ী ও দৃষ্টিনন্দন প্লাস্টিক টব, ড্রেনেজ ছিদ্র যুক্ত।"
+            },
+            {
+                id: 4,
+                name: "কোকোপিট ব্লক (Coco Peat)",
+                category: "গ্রোথ মিডিয়া",
+                price: 130,
+                unit: "কেজি",
+                image: "https://images.unsplash.com/photo-1617576683096-00fc8eecb3af?w=500&auto=format&fit=crop",
+                description: "টবের মাটিতে পানি ধরে রাখতে ও মূল শক্ত করতে সাহায্য করে।"
+            }
         ];
 
-        let cart = [];
+        // ===================================================
+        // 🛠️ ৩. রেন্ডারিং কোড (এগুলো পরিবর্তনের প্রয়োজন নেই)
+        // ===================================================
+        document.getElementById('display-phone').innerText = "+" + whatsappNumber;
 
-        // প্রোডাক্ট প্রদর্শন করার ফাংশন
         function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            products.forEach(product => {
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <img src="${product.image}" alt="${product.name}">
-                        <div class="product-title">${product.name}</div>
-                        <div class="product-price">৳${product.price}</div>
-                        <button class="btn-add" onclick="addToCart(${product.id})">কার্টে যোগ করুন</button>
-                    </div>
-                `;
-            });
-        }
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '';
 
-        // কার্টে প্রোডাক্ট যোগ করার ফাংশন
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            updateCartUI();
-        }
-
-        // কার্ট থেকে কমানো
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCartUI();
-        }
-
-        // কার্ট ইন্টারফেস আপডেট
-        function updateCartUI() {
-            const cartContainer = document.getElementById('cartItems');
-            const totalPriceEl = document.getElementById('totalPrice');
-
-            if (cart.length === 0) {
-                cartContainer.innerHTML = '<p style="color: #777; font-size: 14px;">কার্ট বর্তমানে খালি রয়েছে।</p>';
-                totalPriceEl.innerText = 'মোট: ৳০';
-                return;
-            }
-
-            cartContainer.innerHTML = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                cartContainer.innerHTML += `
-                    <div class="cart-item">
-                        <div>
-                            <strong>${item.name}</strong><br>
-                            ৳${item.price} x ${item.quantity} = ৳${itemTotal}
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-emerald-100 flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 overflow-hidden bg-gray-100">
+                            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-emerald-700 text-white text-xs px-2.5 py-1 rounded-full shadow">${p.category}</span>
                         </div>
-                        <button onclick="removeFromCart(${item.id})">মুছুন</button>
+                        <div class="p-5">
+                            <h4 class="font-bold text-lg text-gray-800 mb-1">${p.name}</h4>
+                            <p class="text-xs text-gray-500 mb-3">${p.description}</p>
+                            <div class="text-emerald-700 font-extrabold text-xl mb-4">
+                                ৳${p.price} <span class="text-xs font-normal text-gray-500">/ ${p.unit}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 pt-0 border-t border-gray-100 mt-auto">
+                        <div class="flex items-center justify-between mb-4 bg-emerald-50 p-2 rounded-lg">
+                            <span class="text-xs font-semibold text-emerald-800">পরিমাণ:</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="updateQty(${p.id}, -1)" class="w-7 h-7 bg-white text-emerald-800 border border-emerald-300 rounded font-bold hover:bg-emerald-100">-</button>
+                                <span id="qty-${p.id}" class="font-bold text-sm min-w-[20px] text-center">1</span>
+                                <button onclick="updateQty(${p.id}, 1)" class="w-7 h-7 bg-white text-emerald-800 border border-emerald-300 rounded font-bold hover:bg-emerald-100">+</button>
+                            </div>
+                        </div>
+
+                        <button onclick="orderWhatsApp(${p.id})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center gap-2 transition">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> হোয়াটসঅ্যাপে অর্ডার করুন
+                        </button>
                     </div>
                 `;
+                container.appendChild(card);
             });
-
-            totalPriceEl.innerText = `মোট: ৳${total}`;
         }
 
-        // হোয়াটসঅ্যাপে অর্ডার পাঠানোর মেথড
-        function sendWhatsAppOrder(event) {
-            event.preventDefault();
-
-            if (cart.length === 0) {
-                alert("অনুগ্রহ করে অন্তত একটি পণ্য কার্টে যোগ করুন!");
-                return;
-            }
-
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-
-            let orderItemsText = "";
-            let totalAmount = 0;
-
-            cart.forEach((item, index) => {
-                const subtotal = item.price * item.quantity;
-                totalAmount += subtotal;
-                orderItemsText += `${index + 1}. ${item.name} (${item.quantity}টি) - ৳${subtotal}\n`;
-            });
-
-            // মেসেজ টেমপ্লেট সাজানো
-            const message = `🛒 *নতুন ওয়েবসাইট অর্ডার* 🛒\n\n` +
-                `👤 *কাস্টমার নাম:* ${name}\n` +
-                `📞 *ফোন নম্বর:* ${phone}\n` +
-                `📍 *ঠিকানা:* ${address}\n\n` +
-                `📦 *পণ্যের বিবরণ:*\n${orderItemsText}\n` +
-                `💰 *সর্বমোট মূল্য:* ৳${totalAmount}\n\n` +
-                `ধন্যবাদ!`;
-
-            // হোয়াটসঅ্যাপ লিংক তৈরি
-            const whatsappUrl = `https://wa.me/${MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-            // নতুন ট্যাবে হোয়াটসঅ্যাপ খোলা
-            window.open(whatsappUrl, '_blank');
+        // পরিমাণ কমানো/বাড়ানো
+        function updateQty(id, change) {
+            const qtyElement = document.getElementById(`qty-${id}`);
+            let currentQty = parseInt(qtyElement.innerText);
+            currentQty += change;
+            if (currentQty < 1) currentQty = 1;
+            qtyElement.innerText = currentQty;
         }
 
-        // পেজ লোড হলে প্রোডাক্ট দেখাবে
+        // WhatsApp অর্ডার লিঙ্ক তৈরি
+        function orderWhatsApp(id) {
+            const p = products.find(prod => prod.id === id);
+            const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
+            const totalPrice = p.price * qty;
+
+            const message = `হ্যালো UrbanMati (আরবান মাটি),\nআমি একটি নতুন অর্ডার করতে চাই:\n\n📌 *প্রোডাক্ট:* ${p.name}\n📦 *পরিমাণ:* ${qty} ${p.unit}\n💰 *মোট মূল্য:* ৳${totalPrice}\n\nআমার নাম, মোবাইল নম্বর ও ডেলিভারি ঠিকানা নিচে দেওয়া হলো:`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(url, '_blank');
+        }
+
+        // সাইট লোড হলে প্রোডাক্ট দেখাবে
         renderProducts();
     </script>
 </body>

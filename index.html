@@ -41,8 +41,9 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
 
 <section class="bg-gradient-to-r from-emerald-800 to-green-700 text-white py-9 px-4">
   <div class="max-w-4xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">🚚 বগুড়া শহরে ৳499+ অর্ডারে FREE HOME DELIVERY</div>
     <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">আপনার ছাদবাগান সাজুক সেরা উপকরণে</h2>
-    <p class="text-emerald-100 text-sm sm:text-base mb-6">গাছ, বীজ, টব, জৈব সার, মাটি, প্রসেসড ফার্টিলাইজার ও কোকোডাস্ট।</p>
+    <p class="text-emerald-100 text-sm sm:text-base mb-6">গাছ, বীজ, টব, জৈব সার, মাটি ও বাগানের প্রয়োজনীয় উপকরণ।</p>
     <a href="#products-section" class="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-bold px-6 py-2.5 rounded-full shadow-lg inline-flex items-center gap-2">
       <i class="fa-solid fa-basket-shopping"></i> পণ্য দেখুন
     </a>
@@ -70,7 +71,6 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 </main>
 
-<!-- Fixed cart bar -->
 <div id="cart-bar" class="hidden fixed bottom-4 left-3 right-3 sm:left-auto sm:right-5 z-50">
   <button onclick="openCart()" class="bg-emerald-700 hover:bg-emerald-800 text-white rounded-2xl shadow-2xl px-5 py-3 flex items-center gap-4 border border-emerald-500">
     <span class="w-9 h-9 bg-white/15 rounded-full flex items-center justify-center"><i class="fa-solid fa-cart-shopping"></i></span>
@@ -79,7 +79,6 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   </button>
 </div>
 
-<!-- Floating contacts -->
 <div class="fixed right-4 bottom-24 sm:bottom-5 z-40 flex flex-col gap-2">
   <a id="wa-float" target="_blank" class="w-12 h-12 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center shadow-xl text-2xl" title="WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
@@ -93,7 +92,7 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-5 text-center md:text-left">
     <div>
       <h4 class="text-xl font-bold text-white">UrbanMati (আরবান মাটি)</h4>
-      <p class="text-xs text-emerald-300 mt-1">গুণগত মানের গাছ, বীজ, টব ও সার সরবরাহে প্রতিশ্রুতিবদ্ধ।</p>
+      <p class="text-xs text-emerald-300 mt-1">গুণগত মানের গাছ, বীজ, টব ও বাগানের উপকরণ সরবরাহে প্রতিশ্রুতিবদ্ধ।</p>
     </div>
     <div class="text-sm">
       <p><i class="fa-brands fa-whatsapp text-green-400 mr-1"></i> WhatsApp: <span id="display-phone" class="font-semibold text-white"></span></p>
@@ -103,7 +102,18 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   <div class="text-center text-xs text-emerald-500 border-t border-emerald-800 mt-6 pt-4">&copy; 2026 UrbanMati. All rights reserved.</div>
 </footer>
 
-<!-- Cart Modal -->
+<!-- PRODUCT DETAILS MODAL -->
+<div id="product-modal" class="hidden fixed inset-0 modal-bg z-[80] p-3 sm:p-5 overflow-y-auto">
+  <div class="bg-white max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-5 sm:mt-10">
+    <div class="flex justify-between items-center bg-emerald-700 text-white px-5 py-4">
+      <h3 id="product-modal-title" class="text-lg sm:text-xl font-bold">পণ্যের বিস্তারিত</h3>
+      <button onclick="closeProductModal()" class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="product-modal-body" class="p-5"></div>
+  </div>
+</div>
+
+<!-- CART MODAL -->
 <div id="cart-modal" class="hidden fixed inset-0 modal-bg z-[60] p-3 sm:p-5 overflow-y-auto">
   <div class="bg-white max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-5 sm:mt-10">
     <div class="bg-emerald-700 text-white px-5 py-4 flex justify-between items-center">
@@ -113,7 +123,8 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
     <div id="cart-items" class="p-4"></div>
     <div class="border-t bg-emerald-50 p-5">
       <div class="flex justify-between text-lg font-bold text-emerald-900"><span>পণ্যের মোট</span><span>৳<span id="cart-total">0</span></span></div>
-      <p class="text-xs text-gray-500 mt-1">ডেলিভারি চার্জ অর্ডার নিশ্চিত করার সময় জানানো হবে।</p>
+      <p class="text-xs text-emerald-700 mt-2 font-semibold">🚚 বগুড়া শহরে ৳499+ অর্ডারে ডেলিভারি FREE</p>
+      <p class="text-xs text-gray-500 mt-1">৳499-এর নিচে বগুড়া অর্ডারে ডেলিভারি ৳40।</p>
       <button onclick="openCheckout()" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl">
         অর্ডার করতে এগিয়ে যান <i class="fa-solid fa-arrow-right ml-1"></i>
       </button>
@@ -121,13 +132,13 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   </div>
 </div>
 
-<!-- Checkout Modal -->
+<!-- CHECKOUT MODAL -->
 <div id="checkout-modal" class="hidden fixed inset-0 modal-bg z-[70] p-3 sm:p-5 overflow-y-auto">
   <div class="bg-white max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8">
     <div class="bg-emerald-700 text-white px-5 py-4 flex justify-between items-center">
       <div>
         <h3 class="text-xl font-bold">অর্ডার কনফার্ম করুন</h3>
-        <p class="text-xs text-emerald-100">আপনার তথ্য দিন, তারপর WhatsApp-এ অর্ডার পাঠান</p>
+        <p class="text-xs text-emerald-100">তথ্য দিন, তারপর WhatsApp-এ অর্ডার পাঠান</p>
       </div>
       <button onclick="closeCheckout()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -136,8 +147,10 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
       <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 mb-5">
         <h4 class="font-bold text-emerald-900 mb-3">🛒 অর্ডারের সংক্ষিপ্ত তালিকা</h4>
         <div id="checkout-summary" class="space-y-2 text-sm"></div>
-        <div class="border-t border-emerald-200 mt-3 pt-3 flex justify-between font-bold text-emerald-900">
-          <span>মোট পণ্য মূল্য</span><span>৳<span id="checkout-total">0</span></span>
+        <div class="border-t border-emerald-200 mt-3 pt-3 space-y-2">
+          <div class="flex justify-between"><span>মোট পণ্য মূল্য</span><span>৳<span id="checkout-subtotal">0</span></span></div>
+          <div class="flex justify-between"><span>ডেলিভারি</span><span id="checkout-delivery" class="font-bold">ঠিকানা দিলে হিসাব হবে</span></div>
+          <div class="flex justify-between text-lg font-bold text-emerald-900 pt-2 border-t border-emerald-200"><span>সর্বমোট</span><span>৳<span id="checkout-grand-total">0</span></span></div>
         </div>
       </div>
 
@@ -149,6 +162,14 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
         <div>
           <label class="block text-sm font-semibold mb-1">মোবাইল নম্বর <span class="text-red-500">*</span></label>
           <input id="customer-phone" type="tel" placeholder="01XXXXXXXXX" class="w-full border border-gray-300 rounded-xl px-4 py-3">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">ডেলিভারি জেলা <span class="text-red-500">*</span></label>
+          <select id="customer-district" onchange="updateCheckoutDelivery()" class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white">
+            <option value="">জেলা নির্বাচন করুন</option>
+            <option value="bogura">বগুড়া</option>
+            <option value="other">অন্যান্য জেলা</option>
+          </select>
         </div>
         <div>
           <label class="block text-sm font-semibold mb-1">ডেলিভারি ঠিকানা <span class="text-red-500">*</span></label>
@@ -163,186 +184,81 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
       <button onclick="sendOrderToWhatsApp()" class="w-full mt-5 bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl shadow flex items-center justify-center gap-2">
         <i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp-এ অর্ডার কনফার্ম করুন
       </button>
-      <p class="text-[11px] text-gray-500 text-center mt-2">বাটনে চাপলে WhatsApp খুলবে এবং অর্ডারের সব তথ্য আগে থেকেই লেখা থাকবে।</p>
+      <p class="text-[11px] text-gray-500 text-center mt-2">WhatsApp খুলবে এবং অর্ডারের সব তথ্য আগে থেকেই লেখা থাকবে।</p>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-[100] bg-gray-900 text-white px-5 py-3 rounded-xl shadow-xl text-sm"></div>
 
 <script>
 /* =========================================================
-   ⚙️ BUSINESS SETTINGS — শুধু এই অংশটি পরিবর্তন করলেই হবে
+   ⚙️ BUSINESS SETTINGS — সবচেয়ে বেশি যেগুলো বদলাবে
    ========================================================= */
-const whatsappNumber = "8801700000000"; // 880 সহ তোমার WhatsApp নম্বর
-const messengerPage = ""; // Facebook Page URL এখানে বসাও; না থাকলে খালি রাখো
+const whatsappNumber = "8801700000000"; // তোমার WhatsApp নম্বর বসাও
+const messengerPage = ""; // Facebook Page URL
+const freeDeliveryMinimum = 499; // বগুড়ায় এই amount বা তার বেশি হলে FREE
+const boguraSmallOrderDelivery = 40; // ৳499-এর নিচে বগুড়া delivery
+const outsideBoguraDeliveryText = "WhatsApp-এ যোগাযোগ করে delivery charge নিশ্চিত হবে";
 
 /* =========================================================
-   📦 PRODUCTS — নতুন পণ্য যোগ করতে নিচের মতো একটি object কপি করো
+   📦 PRODUCTS
+   দাম পরে শুধু price: এর সংখ্যা বদলালেই হবে।
+   cost শুধু তোমার হিসাবের জন্য রাখা হয়েছে; customer-কে দেখানো হয় না।
    ========================================================= */
 const products = [
-  {
-    id:1,
-    name:"ইনডোর স্পাইডার প্ল্যান্ট (Spider Plant)",
-    category:"গাছ ও বীজ",
-    price:150,
-    unit:"টবসহ চারা",
-    image:"spider-plant-1.jpg",
-    description:"বাতাস পরিশোধনকারী জনপ্রিয় ইনডোর গাছ, কম পরিচর্যাতেই সতেজ থাকে।"
-  },
-  {
-    id:2,
-    name:"স্নাক প্লান্ট (ছোট পাতা)",
-    category:"গাছ ও বীজ",
-    price:150,
-    unit:"প্যাকেট",
-    image:"snake-plant-1.jpg",
-    description:"বাড়ি ও অফিসের জন্য উপযোগী জনপ্রিয় গাছ।"
-  }, 
-  {
-    id:3,
-    name:"স্নেক প্ল্যান্ট (লম্বা পাতা)",
-    category:"গাছ ও বীজ",
-    price:150,
-    unit:"প্যাকেট",
-    image:"snake-plant-2.jpg",
-    description:"প্লাস্টিক পটসহ। স্নেক প্লান্ট একটি ইনডোর জাতীয় প্লান্ট, ঘরের দূষিত পদার্থ শোষণ করে। বিশুদ্ধ অক্সিজেন প্রবাহ করে।"
-  },
-  {
-    id:3,
-    name:"হাইব্রিড টমেটো বীজ (প্যাক)",
-    category:"গাছ ও বীজ",
-    price:50,
-    unit:"প্যাকেট",
-    image:"https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=500&auto=format&fit=crop",
-    description:"ছাদবাগানের টবে লাগানোর উপযোগী টমেটো বীজ।"
-  },
-  {
-    id:4,
-    name:"নকশাদার প্রাকৃতিক মাটির টব (১০ ইঞ্চি)",
-    category:"টব ও পাত্র",
-    price:120,
-    unit:"পিস",
-    image:"https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&auto=format&fit=crop",
-    description:"গাছের জন্য উপযোগী খাঁটি মাটির প্রথাগত টব।"
-  },
-  {
-    id:5,
-    name:"মজবুত সিমেন্টের টব (১২ ইঞ্চি)",
-    category:"টব ও পাত্র",
-    price:40,
-    unit:"পিস",
-    image:"https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=500&auto=format&fit=crop",
-    description:"দীর্ঘস্থায়ী ও টেকসই টব।"
-  },
-  {
-    id:6,
-    name:"প্লাস্টিক ড্রেনেজ টব (৮ ইঞ্চি)",
-    category:"টব ও পাত্র",
-    price:80,
-    unit:"পিস",
-    image:"https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?w=500&auto=format&fit=crop",
-    description:"হালকা ও দৃষ্টিনন্দন প্লাস্টিক টব।"
-  },
-  {
-    id:7,
-    name:"প্রসেসড কোকোডাস্ট (নারকেল ছোবরা)",
-    category:"গ্রোথ মিডিয়া ও সার",
-    price:80,
-    unit:"কেজি",
-    image:"cocodast.jpg",
-    description:"বীজের অঙ্কুরোদগম ও টবে পানি ধরে রাখার চমৎকার মাধ্যম।"
-  },
-  {
-    id:8,
-    name:"প্রিমিয়াম ভার্মিকম্পোস্ট (কেঁচো সার)",
-    category:"গ্রোথ মিডিয়া ও সার",
-    price:30,
-    unit:"কেজি",
-    image:"vermicompost.png",
-    description:"খাঁটি জৈব কেঁচো সার। গাছের বৃদ্ধি ও ফলনের জন্য উপযোগী।"
-  },
-  {
-    id:9,
-    name:"ড্রাইড পচানো গোবর সার",
-    category:"গ্রোথ মিডিয়া ও সার",
-    price:20,
-    unit:"কেজি",
-    image:"dry-compost.png",
-    description:"প্রক্রিয়াজাত শুষ্ক গোবর সার।"
-  }
+  {id:1,name:"Lucky Bamboo",category:"গাছ ও বীজ",price:120,cost:60,unit:"পিস",image:"lucky-bamboo.jpg",description:"ঘর, অফিস ও ছোট জায়গার জন্য সুন্দর ও সহজে পরিচর্যা করা যায়।",details:"উজ্জ্বল কিন্তু সরাসরি তীব্র রোদ নয়। পরিষ্কার পানিতে বা উপযুক্ত মাধ্যমে রাখা যায়।"},
+  {id:2,name:"Spider Plant",category:"গাছ ও বীজ",price:120,cost:60,unit:"পিস",image:"spider-plant-1.jpg",description:"ইনডোর বাগানের জনপ্রিয় গাছ; কম পরিচর্যায় ভালো থাকে।",details:"উজ্জ্বল পরোক্ষ আলো পছন্দ করে। মাটি অতিরিক্ত ভেজা না রাখাই ভালো।"},
+  {id:3,name:"Snake Plant - ছোট",category:"গাছ ও বীজ",price:150,cost:60,unit:"পিস",image:"snake-plant-1.jpg",description:"ঘর ও অফিসের জন্য জনপ্রিয়, শক্ত ও কম পরিচর্যার গাছ।",details:"কম আলোতেও মানিয়ে নিতে পারে। পানি দেওয়ার আগে মাটি শুকিয়েছে কি না দেখুন।"},
+  {id:4,name:"Snake Plant - বড়",category:"গাছ ও বীজ",price:200,cost:80,unit:"পিস",image:"snake-plant-2.jpg",description:"বড় সাইজের স্নেক প্ল্যান্ট, ইনডোর সাজসজ্জার জন্য উপযোগী।",details:"উজ্জ্বল পরোক্ষ আলো ভালো। অতিরিক্ত পানি এড়িয়ে চলুন।"},
+  {id:5,name:"Ming Aralia + Plastic Pot",category:"গাছ ও বীজ",price:180,cost:60,unit:"সেট",image:"ming-aralia.jpg",description:"গাছ ও পট একসাথে—ঘর বা অফিসের জন্য সুন্দর একটি সেট।",details:"আলোযুক্ত জায়গায় রাখুন এবং মাটি শুকালে পরিমিত পানি দিন।"},
+
+  {id:6,name:"Tomato Seed",category:"গাছ ও বীজ",price:50,cost:null,unit:"প্যাকেট",image:"https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=500&auto=format&fit=crop",description:"টবে ও ছাদবাগানে টমেটো চাষের জন্য বীজ।",details:"বীজের প্যাকেটের নির্দেশনা অনুযায়ী বপন করুন।"},
+  {id:7,name:"Cabbage Seed",category:"গাছ ও বীজ",price:50,cost:null,unit:"প্যাকেট",image:"cabbage-seed.jpg",description:"বাড়ির বাগান ও টবে চাষের জন্য বাঁধাকপির বীজ।",details:"চারা তৈরি করে উপযুক্ত বয়সে বড় টব বা জমিতে স্থানান্তর করা যায়।"},
+  {id:8,name:"Capsicum Seed",category:"গাছ ও বীজ",price:60,cost:null,unit:"প্যাকেট",image:"capsicum-seed.jpg",description:"টব বা ছাদবাগানে ক্যাপসিকাম চাষের জন্য বীজ।",details:"রোদযুক্ত জায়গা ও পানি নিষ্কাশন ভালো এমন মাটি ব্যবহার করুন।"},
+  {id:9,name:"Okra Seed",category:"গাছ ও বীজ",price:50,cost:32,unit:"10 গ্রাম",image:"okra-seed.jpg",description:"ঢেঁড়সের বীজ—বাড়ির বাগান ও টবে চাষের জন্য।",details:"তোমার দেওয়া cost 100g = ৳320 ধরে 10g cost প্রায় ৳32।"},
+  {id:10,name:"বারোমাসি মিষ্টি কুমড়া Seed",category:"গাছ ও বীজ",price:60,cost:40,unit:"10 গ্রাম",image:"pumpkin-seed.jpg",description:"বারোমাসি মিষ্টি কুমড়া চাষের জন্য বীজ।",details:"তোমার দেওয়া cost 10g = ৳40। পর্যাপ্ত জায়গা ও মাচা থাকলে ভালো ফলন পাওয়া যায়।"},
+
+  {id:11,name:"Vermicompost",category:"গ্রোথ মিডিয়া ও সার",price:50,cost:15,unit:"1 কেজি",image:"vermicompost.png",description:"জৈব কেঁচো সার—গাছের বৃদ্ধি ও মাটির গুণমান উন্নত করতে ব্যবহার করা যায়।",details:"টবের মাটির সঙ্গে পরিমিত পরিমাণে মিশিয়ে ব্যবহার করুন।"},
+  {id:12,name:"Cow Manure",category:"গ্রোথ মিডিয়া ও সার",price:40,cost:15,unit:"1 কেজি",image:"dry-compost.png",description:"প্রক্রিয়াজাত শুষ্ক গোবর সার।",details:"টবের মাটির সঙ্গে মিশিয়ে ব্যবহার করুন; কাঁচা গোবর সরাসরি শিকড়ে না দেওয়াই ভালো।"},
+  {id:13,name:"দোআঁশ মাটি",category:"গ্রোথ মিডিয়া ও সার",price:40,cost:10,unit:"5 কেজি",image:"doash-mati.jpg",description:"বাগান ও টবের জন্য দোআঁশ মাটি।",details:"অন্যান্য উপাদানের সঙ্গে মিশিয়ে ব্যবহার করলে টবের growing media তৈরি করা যায়।"},
+  {id:14,name:"Ready Soil / Ready Potting Mix",category:"গ্রোথ মিডিয়া ও সার",price:80,cost:20,unit:"5 কেজি",image:"ready-soil.jpg",description:"টবের গাছ লাগানোর জন্য প্রস্তুত মাটির মিশ্রণ।",details:"টব ভরার জন্য সরাসরি ব্যবহার বা প্রয়োজন অনুযায়ী compost-এর সঙ্গে মিশিয়ে ব্যবহার করতে পারেন।"},
+
+  {id:15,name:"Plastic Pot - ছোট",category:"টব ও পাত্র",price:50,cost:30,unit:"পিস",image:"plastic-pot-small.jpg",description:"ছোট গাছ ও চারা লাগানোর জন্য হালকা প্লাস্টিক টব।",details:"নিচে পানি বের হওয়ার drainage hole আছে কি না দেখে ব্যবহার করুন।"},
+  {id:16,name:"Plastic Pot - মাঝারি",category:"টব ও পাত্র",price:70,cost:40,unit:"পিস",image:"plastic-pot-medium.jpg",description:"মাঝারি আকারের গাছের জন্য প্লাস্টিক টব।",details:"গাছের আকার অনুযায়ী টব নির্বাচন করুন।"},
+  {id:17,name:"Plastic Pot - বড়",category:"টব ও পাত্র",price:90,cost:50,unit:"পিস",image:"plastic-pot-large.jpg",description:"বড় গাছের জন্য তুলনামূলক বড় প্লাস্টিক টব।",details:"ভারী গাছের ক্ষেত্রে শক্ত জায়গায় রাখুন এবং drainage নিশ্চিত করুন."},
+  {id:18,name:"Clay Pot - মাঝারি",category:"টব ও পাত্র",price:60,cost:20,unit:"পিস",image:"clay-pot-medium.jpg",description:"প্রাকৃতিক মাটির টব—গাছ ও বাগানের জন্য।",details:"ভঙ্গুর হতে পারে, তাই পরিবহন ও ব্যবহারে যত্ন নিন।"},
+  {id:19,name:"Cement Pot - ছোট",category:"টব ও পাত্র",price:50,cost:10,unit:"পিস",image:"cement-pot-small.jpg",description:"টেকসই ছোট সিমেন্টের টব।",details:"ছোট ও মাঝারি গাছের জন্য ব্যবহার করা যায়।"},
+  {id:20,name:"Cement Pot - মাঝারি",category:"টব ও পাত্র",price:80,cost:20,unit:"পিস",image:"cement-pot-medium.jpg",description:"টেকসই মাঝারি সাইজের সিমেন্টের টব।",details:"ভারী হওয়ায় local delivery-এর জন্য বেশি উপযোগী।"},
+
+  {id:21,name:"Hand Pump Trigger Sprayer",category:"টব ও পাত্র",price:60,cost:30,unit:"পিস",image:"trigger-sprayer.jpg",description:"গাছে পানি বা উপযুক্ত liquid solution spray করার জন্য hand-pump trigger।",details:"ব্যবহারের আগে যে solution spray করবেন তার label-এর নির্দেশনা অনুসরণ করুন।"}
 ];
 
 /* =========================================================
-   🛒 CART ENGINE
+   🛒 CART
    ========================================================= */
-let currentCategory = "all";
-let cart = JSON.parse(localStorage.getItem("urbanmati_cart") || "{}");
+let currentCategory="all";
+let cart=JSON.parse(localStorage.getItem("urbanmati_cart")||"{}");
 
-function saveCart(){
-  localStorage.setItem("urbanmati_cart", JSON.stringify(cart));
-  updateCartUI();
-}
-
-function getCartItems(){
-  return Object.keys(cart).map(id => {
-    const product = products.find(p => p.id == id);
-    if(!product) return null;
-    return {...product, qty:cart[id]};
-  }).filter(Boolean);
-}
-
-function cartTotal(){
-  return getCartItems().reduce((sum,p)=>sum + (p.price*p.qty),0);
-}
-
-function cartCount(){
-  return getCartItems().reduce((sum,p)=>sum+p.qty,0);
-}
-
+function saveCart(){localStorage.setItem("urbanmati_cart",JSON.stringify(cart));updateCartUI();}
+function getCartItems(){return Object.keys(cart).map(id=>{const p=products.find(x=>x.id==id);return p?{...p,qty:cart[id]}:null}).filter(Boolean);}
+function cartTotal(){return getCartItems().reduce((s,p)=>s+p.price*p.qty,0);}
+function cartCount(){return getCartItems().reduce((s,p)=>s+p.qty,0);}
 function updateCartUI(){
-  const count=cartCount(), total=cartTotal();
-  document.getElementById("cart-count").innerText=count;
-  document.getElementById("cart-bar-count").innerText=count;
-  document.getElementById("cart-bar-total").innerText=total;
-  document.getElementById("cart-bar").classList.toggle("hidden",count===0);
+  const c=cartCount(),t=cartTotal();
+  document.getElementById("cart-count").innerText=c;
+  document.getElementById("cart-bar-count").innerText=c;
+  document.getElementById("cart-bar-total").innerText=t;
+  document.getElementById("cart-bar").classList.toggle("hidden",c===0);
 }
-
-function addToCart(id){
-  cart[id]=(cart[id]||0)+1;
-  saveCart();
-  showToast("পণ্যটি কার্টে যোগ হয়েছে ✓");
-}
-
-function changeCartQty(id,change){
-  cart[id]=(cart[id]||0)+change;
-  if(cart[id]<=0) delete cart[id];
-  saveCart();
-  renderCart();
-  if(cartCount()===0) closeCart();
-}
-
-function removeFromCart(id){
-  delete cart[id];
-  saveCart();
-  renderCart();
-  showToast("পণ্যটি কার্ট থেকে সরানো হয়েছে");
-}
+function addToCart(id){cart[id]=(cart[id]||0)+1;saveCart();showToast("পণ্যটি কার্টে যোগ হয়েছে ✓");}
+function changeCartQty(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];saveCart();renderCart();if(!cartCount())closeCart();}
+function removeFromCart(id){delete cart[id];saveCart();renderCart();showToast("পণ্যটি কার্ট থেকে সরানো হয়েছে");}
 
 function renderCart(){
-  const box=document.getElementById("cart-items");
-  const items=getCartItems();
+  const box=document.getElementById("cart-items"),items=getCartItems();
   document.getElementById("cart-total").innerText=cartTotal();
-
-  if(!items.length){
-    box.innerHTML=`<div class="text-center py-10 text-gray-500">
-      <div class="text-5xl mb-3">🛒</div>
-      <p>আপনার কার্ট এখনো খালি।</p>
-    </div>`;
-    return;
-  }
-
+  if(!items.length){box.innerHTML=`<div class="text-center py-10 text-gray-500"><div class="text-5xl mb-3">🛒</div><p>আপনার কার্ট এখনো খালি।</p></div>`;return;}
   box.innerHTML=items.map(p=>`
     <div class="flex gap-3 py-3 border-b last:border-0">
       <img src="${p.image}" onerror="this.src='https://via.placeholder.com/100?text=Product'" class="w-16 h-16 rounded-xl object-cover bg-gray-100">
@@ -359,157 +275,131 @@ function renderCart(){
         </div>
       </div>
       <button onclick="removeFromCart(${p.id})" class="text-red-400 hover:text-red-600 self-start"><i class="fa-solid fa-trash"></i></button>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
-
-function openCart(){
-  renderCart();
-  document.getElementById("cart-modal").classList.remove("hidden");
-  document.body.classList.add("no-scroll");
-}
-function closeCart(){
-  document.getElementById("cart-modal").classList.add("hidden");
-  document.body.classList.remove("no-scroll");
-}
+function openCart(){renderCart();document.getElementById("cart-modal").classList.remove("hidden");document.body.classList.add("no-scroll");}
+function closeCart(){document.getElementById("cart-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
 
 /* =========================================================
-   🛍️ PRODUCTS
+   🔎 PRODUCT LIST + DETAILS
    ========================================================= */
 function filterCategory(cat){
   currentCategory=cat;
-  document.querySelectorAll(".category-btn").forEach(btn=>{
-    btn.classList.remove("bg-emerald-700","text-white");
-    btn.classList.add("bg-white","text-emerald-900");
-  });
+  document.querySelectorAll(".category-btn").forEach(b=>{b.classList.remove("bg-emerald-700","text-white");b.classList.add("bg-white","text-emerald-900");});
   const active=document.getElementById("btn-"+cat);
-  if(active){
-    active.classList.remove("bg-white","text-emerald-900");
-    active.classList.add("bg-emerald-700","text-white");
-  }
+  if(active){active.classList.remove("bg-white","text-emerald-900");active.classList.add("bg-emerald-700","text-white");}
   renderProducts();
 }
-
 function renderProducts(){
-  const container=document.getElementById("product-grid");
-  const search=document.getElementById("search-input").value.trim().toLowerCase();
+  const c=document.getElementById("product-grid"),search=document.getElementById("search-input").value.trim().toLowerCase();
   let list=currentCategory==="all"?products:products.filter(p=>p.category===currentCategory);
-  if(search) list=list.filter(p=>(p.name+" "+p.description+" "+p.category).toLowerCase().includes(search));
-
-  if(!list.length){
-    container.innerHTML=`<div class="col-span-full text-center py-12 text-gray-500">কোনো প্রোডাক্ট পাওয়া যায়নি।</div>`;
-    return;
-  }
-
-  container.innerHTML=list.map(p=>`
+  if(search)list=list.filter(p=>(p.name+" "+p.description+" "+p.category).toLowerCase().includes(search));
+  if(!list.length){c.innerHTML=`<div class="col-span-full text-center py-12 text-gray-500">কোনো প্রোডাক্ট পাওয়া যায়নি।</div>`;return;}
+  c.innerHTML=list.map(p=>`
     <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden border border-emerald-100 flex flex-col">
-      <div class="relative h-48 bg-gray-100">
+      <button onclick="openProductModal(${p.id})" class="relative h-48 bg-gray-100 text-left">
         <img src="${p.image}" onerror="this.src='https://via.placeholder.com/600x400?text=UrbanMati'" alt="${p.name}" class="w-full h-full object-cover">
         <span class="absolute top-3 left-3 bg-emerald-700 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow">${p.category}</span>
-      </div>
+        <span class="absolute bottom-3 right-3 bg-white/90 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full">বিস্তারিত দেখুন</span>
+      </button>
       <div class="p-5 flex flex-col flex-1">
-        <h4 class="font-bold text-lg text-gray-800 mb-1">${p.name}</h4>
+        <button onclick="openProductModal(${p.id})" class="text-left font-bold text-lg text-gray-800 mb-1 hover:text-emerald-700">${p.name}</button>
         <p class="text-xs text-gray-500 mb-3 line-clamp-2">${p.description}</p>
         <div class="text-emerald-700 font-extrabold text-xl mb-4">৳${p.price} <span class="text-xs font-normal text-gray-500">/ ${p.unit}</span></div>
         <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center gap-2">
           <i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন
         </button>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
+function openProductModal(id){
+  const p=products.find(x=>x.id==id);if(!p)return;
+  document.getElementById("product-modal-title").innerText=p.name;
+  document.getElementById("product-modal-body").innerHTML=`
+    <img src="${p.image}" onerror="this.src='https://via.placeholder.com/800x500?text=UrbanMati'" class="w-full h-56 sm:h-72 object-cover rounded-2xl bg-gray-100 mb-5">
+    <div class="flex flex-wrap items-center gap-2 mb-3"><span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-bold">${p.category}</span><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">${p.unit}</span></div>
+    <div class="text-3xl font-extrabold text-emerald-700 mb-3">৳${p.price}</div>
+    <p class="text-gray-700 leading-7 mb-4">${p.description}</p>
+    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 mb-5">
+      <h4 class="font-bold text-emerald-900 mb-2">📌 বিস্তারিত</h4>
+      <p class="text-sm text-gray-700 leading-7">${p.details}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <button onclick="addToCart(${p.id});closeProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-cart-plus mr-1"></i> কার্টে যোগ করুন</button>
+      <button onclick="addToCart(${p.id});closeProductModal();openCart()" class="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-bold py-3 rounded-xl"><i class="fa-solid fa-bag-shopping mr-1"></i> এখনই অর্ডার</button>
+    </div>`;
+  document.getElementById("product-modal").classList.remove("hidden");document.body.classList.add("no-scroll");
+}
+function closeProductModal(){document.getElementById("product-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
 
 /* =========================================================
-   🧾 CHECKOUT + WHATSAPP
+   🚚 DELIVERY + CHECKOUT
    ========================================================= */
-function openCheckout(){
-  if(!getCartItems().length){showToast("আগে কার্টে পণ্য যোগ করুন");return;}
-  renderCheckoutSummary();
-  closeCart();
-  document.getElementById("checkout-modal").classList.remove("hidden");
-  document.body.classList.add("no-scroll");
+function getDeliveryInfo(){
+  const subtotal=cartTotal(),district=document.getElementById("customer-district").value;
+  if(!district)return {fee:0,label:"ঠিকানা দিলে হিসাব হবে",known:false};
+  if(district==="bogura"){
+    if(subtotal>=freeDeliveryMinimum)return {fee:0,label:"FREE 🎉",known:true};
+    return {fee:boguraSmallOrderDelivery,label:"৳"+boguraSmallOrderDelivery,known:true};
+  }
+  return {fee:0,label:outsideBoguraDeliveryText,known:false};
 }
-function closeCheckout(){
-  document.getElementById("checkout-modal").classList.add("hidden");
-  document.body.classList.remove("no-scroll");
+function updateCheckoutDelivery(){
+  const d=getDeliveryInfo();
+  document.getElementById("checkout-delivery").innerText=d.label;
+  document.getElementById("checkout-grand-total").innerText=cartTotal()+d.fee;
 }
-
 function renderCheckoutSummary(){
   const items=getCartItems();
-  document.getElementById("checkout-total").innerText=cartTotal();
-  document.getElementById("checkout-summary").innerHTML=items.map(p=>`
-    <div class="flex justify-between gap-3">
-      <span>${p.name} <b class="text-emerald-700">× ${p.qty}</b></span>
-      <b>৳${p.price*p.qty}</b>
-    </div>
-  `).join("");
+  document.getElementById("checkout-subtotal").innerText=cartTotal();
+  document.getElementById("checkout-summary").innerHTML=items.map(p=>`<div class="flex justify-between gap-3"><span>${p.name} <b class="text-emerald-700">× ${p.qty}</b></span><b>৳${p.price*p.qty}</b></div>`).join("");
+  updateCheckoutDelivery();
 }
-
-function cleanPhone(phone){
-  let p=phone.replace(/[^\d+]/g,"");
-  if(p.startsWith("+880")) p=p.substring(1);
-  if(p.startsWith("01")) p="88"+p;
-  return p;
+function openCheckout(){
+  if(!getCartItems().length){showToast("আগে কার্টে পণ্য যোগ করুন");return;}
+  renderCheckoutSummary();closeCart();document.getElementById("checkout-modal").classList.remove("hidden");document.body.classList.add("no-scroll");
 }
+function closeCheckout(){document.getElementById("checkout-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
 
 function sendOrderToWhatsApp(){
   const name=document.getElementById("customer-name").value.trim();
   const phone=document.getElementById("customer-phone").value.trim();
+  const district=document.getElementById("customer-district").value;
   const address=document.getElementById("customer-address").value.trim();
   const note=document.getElementById("customer-note").value.trim();
-
   if(!name){showToast("আপনার নাম দিন");return;}
-  if(!phone || phone.replace(/\D/g,"").length<10){showToast("সঠিক মোবাইল নম্বর দিন");return;}
+  if(!phone||phone.replace(/\D/g,"").length<10){showToast("সঠিক মোবাইল নম্বর দিন");return;}
+  if(!district){showToast("ডেলিভারি জেলা নির্বাচন করুন");return;}
   if(!address){showToast("ডেলিভারি ঠিকানা দিন");return;}
-
-  const items=getCartItems();
-  if(!items.length){showToast("কার্ট খালি");return;}
-
+  const items=getCartItems();if(!items.length){showToast("কার্ট খালি");return;}
+  const d=getDeliveryInfo(),districtName=district==="bogura"?"বগুড়া":"অন্যান্য জেলা";
   let message=`হ্যালো UrbanMati (আরবান মাটি),%0A%0Aআমি একটি নতুন অর্ডার করতে চাই।%0A%0A`;
-  message+=`👤 নাম: ${name}%0A`;
-  message+=`📞 মোবাইল: ${phone}%0A`;
-  message+=`📍 ঠিকানা: ${address}%0A`;
-  if(note) message+=`📝 নোট: ${note}%0A`;
-
+  message+=`👤 নাম: ${encodeURIComponent(name)}%0A`;
+  message+=`📞 মোবাইল: ${encodeURIComponent(phone)}%0A`;
+  message+=`📍 জেলা: ${encodeURIComponent(districtName)}%0A`;
+  message+=`🏠 ঠিকানা: ${encodeURIComponent(address)}%0A`;
+  if(note)message+=`📝 নোট: ${encodeURIComponent(note)}%0A`;
   message+=`%0A🛒 *অর্ডারের তালিকা:*%0A`;
-  items.forEach((p,i)=>{
-    message+=`${i+1}. ${p.name}%0A   ${p.qty} ${p.unit} × ৳${p.price} = ৳${p.price*p.qty}%0A`;
-  });
+  items.forEach((p,i)=>{message+=`${i+1}. ${encodeURIComponent(p.name)} — ${p.qty} ${encodeURIComponent(p.unit)} × ৳${p.price} = ৳${p.price*p.qty}%0A`;});
   message+=`%0A💰 *মোট পণ্য মূল্য: ৳${cartTotal()}*%0A`;
-  message+=`🚚 ডেলিভারি চার্জ: পরে নিশ্চিত হবে%0A%0Aঅনুগ্রহ করে অর্ডারটি কনফার্ম করুন।`;
-
-  const url=`https://wa.me/${whatsappNumber}?text=${message}`;
-  window.open(url,"_blank");
-
-  // Order sent হলে cart পরিষ্কার
-  cart={};
-  saveCart();
-  closeCheckout();
-  showToast("অর্ডার WhatsApp-এ পাঠানো হয়েছে ✓");
+  if(d.known)message+=`🚚 *ডেলিভারি: ${d.fee===0?"FREE":"৳"+d.fee}*%0A`;
+  else message+=`🚚 *ডেলিভারি: ${encodeURIComponent(outsideBoguraDeliveryText)}*%0A`;
+  message+=`💵 *অনুমানিত মোট: ৳${cartTotal()+d.fee}*%0A%0Aঅনুগ্রহ করে অর্ডারটি কনফার্ম করুন।`;
+  window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
+  cart={};saveCart();closeCheckout();showToast("অর্ডার WhatsApp-এ পাঠানো হয়েছে ✓");
 }
 
 /* =========================================================
-   💬 CONTACT + SMALL HELPERS
+   💬 HELPERS
    ========================================================= */
 function showToast(text){
-  const t=document.getElementById("toast");
-  t.innerText=text;
-  t.classList.remove("hidden");
-  clearTimeout(window.toastTimer);
-  window.toastTimer=setTimeout(()=>t.classList.add("hidden"),2200);
+  const t=document.getElementById("toast");t.innerText=text;t.classList.remove("hidden");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.add("hidden"),2200);
 }
-
 document.getElementById("display-phone").innerText="+"+whatsappNumber;
 document.getElementById("wa-float").href=`https://wa.me/${whatsappNumber}`;
 const mf=document.getElementById("messenger-float");
-if(messengerPage){
-  mf.href=messengerPage;
-}else{
-  mf.style.display="none";
-}
-
-renderProducts();
-updateCartUI();
+if(messengerPage)mf.href=messengerPage;else mf.style.display="none";
+renderProducts();updateCartUI();
 </script>
 </body>
 </html>

@@ -31,17 +31,17 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
         <p class="text-[11px] sm:text-xs text-emerald-100">ছাদবাগান ও আধুনিক বাগানের উপকরণ</p>
       </div>
     </div>
-    <button onclick="openCart()" class="relative bg-white text-emerald-800 rounded-xl px-3 py-2 font-bold shadow hover:bg-emerald-50">
+    <div class="flex items-center gap-2"><button onclick="openAdmin()" class="bg-emerald-800 text-white border border-emerald-500 rounded-xl px-3 py-2 font-bold shadow"><i class="fa-solid fa-gear"></i><span class="hidden sm:inline ml-1">Products</span></button><button onclick="openCart()" class="relative bg-white text-emerald-800 rounded-xl px-3 py-2 font-bold shadow hover:bg-emerald-50">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="hidden sm:inline ml-1">কার্ট</span>
       <span id="cart-count" class="cart-badge absolute -top-2 -right-2 bg-amber-400 text-emerald-950 rounded-full text-xs flex items-center justify-center font-bold">0</span>
-    </button>
+    </button></div>
   </div>
 </header>
 
 <section class="bg-gradient-to-r from-emerald-800 to-green-700 text-white py-9 px-4">
   <div class="max-w-4xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">🚚 বগুড়া শহরে ৳299+ অর্ডারে FREE HOME DELIVERY</div>
+    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">🚚 বগুড়া শহরে ৳499+ অর্ডারে FREE HOME DELIVERY</div>
     <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">আপনার ছাদবাগান সাজুক সেরা উপকরণে</h2>
     <p class="text-emerald-100 text-sm sm:text-base mb-6">গাছ, বীজ, টব, জৈব সার, মাটি ও বাগানের প্রয়োজনীয় উপকরণ।</p>
     <a href="#products-section" class="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-bold px-6 py-2.5 rounded-full shadow-lg inline-flex items-center gap-2">
@@ -102,6 +102,9 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   <div class="text-center text-xs text-emerald-500 border-t border-emerald-800 mt-6 pt-4">&copy; 2026 UrbanMati. All rights reserved.</div>
 </footer>
 
+<!-- PRODUCT MANAGEMENT MODAL -->
+<div id="admin-modal" class="hidden fixed inset-0 modal-bg z-[90] p-3 sm:p-5 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8"><div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center"><div><h3 class="text-xl font-bold">⚙️ Product Management</h3><p class="text-xs text-emerald-200">নতুন Product যোগ, Edit বা Delete করুন</p></div><button onclick="closeAdmin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs text-amber-800">⚠️ এইভাবে যোগ করা Product এই browser/device-এর localStorage-এ থাকবে।</div><form onsubmit="saveProductFromForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><input type="hidden" id="edit-product-id"><div><label class="block text-sm font-semibold mb-1">Product Name *</label><input id="admin-name" required class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Category *</label><select id="admin-category" required class="w-full border rounded-xl px-3 py-2.5 bg-white"><option>গাছ ও বীজ</option><option>টব ও পাত্র</option><option>গ্রোথ মিডিয়া ও সার</option></select></div><div><label class="block text-sm font-semibold mb-1">Selling Price (৳) *</label><input id="admin-price" required type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Cost Price (৳)</label><input id="admin-cost" type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Unit / Size</label><input id="admin-unit" class="w-full border rounded-xl px-3 py-2.5" placeholder="পিস / 1 কেজি / 10 গ্রাম"></div><div><label class="block text-sm font-semibold mb-1">Image URL</label><input id="admin-image" class="w-full border rounded-xl px-3 py-2.5" placeholder="https://... বা image-file.jpg"></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Short Description</label><textarea id="admin-description" rows="2" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Full Details</label><textarea id="admin-details" rows="3" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2 flex gap-2"><button id="admin-save-btn" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Product Add করুন</button><button type="button" onclick="resetProductForm()" class="px-5 bg-gray-100 font-bold rounded-xl">Clear</button></div></form><div class="border-t mt-7 pt-5"><div class="flex justify-between mb-3"><h4 class="font-bold text-lg text-emerald-900">Added Products</h4><span id="admin-product-count" class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span></div><div id="admin-product-list" class="space-y-2"></div></div></div></div></div>
+
 <!-- PRODUCT DETAILS MODAL -->
 <div id="product-modal" class="hidden fixed inset-0 modal-bg z-[80] p-3 sm:p-5 overflow-y-auto">
   <div class="bg-white max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-5 sm:mt-10">
@@ -123,8 +126,8 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
     <div id="cart-items" class="p-4"></div>
     <div class="border-t bg-emerald-50 p-5">
       <div class="flex justify-between text-lg font-bold text-emerald-900"><span>পণ্যের মোট</span><span>৳<span id="cart-total">0</span></span></div>
-      <p class="text-xs text-emerald-700 mt-2 font-semibold">🚚 বগুড়া শহরে ৳299+ অর্ডারে ডেলিভারি FREE</p>
-      <p class="text-xs text-gray-500 mt-1">৳299-এর নিচে বগুড়া অর্ডারে ডেলিভারি ৳40।</p>
+      <p class="text-xs text-emerald-700 mt-2 font-semibold">🚚 বগুড়া শহরে ৳499+ অর্ডারে ডেলিভারি FREE</p>
+      <p class="text-xs text-gray-500 mt-1">৳499-এর নিচে বগুড়া অর্ডারে ডেলিভারি ৳40।</p>
       <button onclick="openCheckout()" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl">
         অর্ডার করতে এগিয়ে যান <i class="fa-solid fa-arrow-right ml-1"></i>
       </button>
@@ -206,7 +209,7 @@ const outsideBoguraDeliveryText = "WhatsApp-এ যোগাযোগ করে 
    দাম পরে শুধু price: এর সংখ্যা বদলালেই হবে।
    cost শুধু তোমার হিসাবের জন্য রাখা হয়েছে; customer-কে দেখানো হয় না।
    ========================================================= */
-const products = [
+let products = [
   {id:1,name:"Lucky Bamboo",category:"গাছ ও বীজ",price:120,cost:60,unit:"পিস",image:"lucky-bamboo.jpg",description:"ঘর, অফিস ও ছোট জায়গার জন্য সুন্দর ও সহজে পরিচর্যা করা যায়।",details:"উজ্জ্বল কিন্তু সরাসরি তীব্র রোদ নয়। পরিষ্কার পানিতে বা উপযুক্ত মাধ্যমে রাখা যায়।"},
   {id:2,name:"Spider Plant",category:"গাছ ও বীজ",price:120,cost:60,unit:"পিস",image:"spider-plant-1.jpg",description:"ইনডোর বাগানের জনপ্রিয় গাছ; কম পরিচর্যায় ভালো থাকে।",details:"উজ্জ্বল পরোক্ষ আলো পছন্দ করে। মাটি অতিরিক্ত ভেজা না রাখাই ভালো।"},
   {id:3,name:"Snake Plant - ছোট",category:"গাছ ও বীজ",price:150,cost:60,unit:"পিস",image:"snake-plant-1.jpg",description:"ঘর ও অফিসের জন্য জনপ্রিয়, শক্ত ও কম পরিচর্যার গাছ।",details:"কম আলোতেও মানিয়ে নিতে পারে। পানি দেওয়ার আগে মাটি শুকিয়েছে কি না দেখুন।"},
@@ -233,6 +236,19 @@ const products = [
 
   {id:21,name:"Hand Pump Trigger Sprayer",category:"টব ও পাত্র",price:60,cost:30,unit:"পিস",image:"trigger-sprayer.jpg",description:"গাছে পানি বা উপযুক্ত liquid solution spray করার জন্য hand-pump trigger।",details:"ব্যবহারের আগে যে solution spray করবেন তার label-এর নির্দেশনা অনুসরণ করুন।"}
 ];
+
+/* USER-ADDED PRODUCTS */
+let customProducts=JSON.parse(localStorage.getItem("urbanmati_custom_products")||"[]");
+products=products.concat(customProducts);
+function saveCustomProducts(){localStorage.setItem("urbanmati_custom_products",JSON.stringify(customProducts));}
+function openAdmin(){document.getElementById("admin-modal").classList.remove("hidden");document.body.classList.add("no-scroll");renderAdminProducts();}
+function closeAdmin(){document.getElementById("admin-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
+function resetProductForm(){document.querySelector('#admin-modal form').reset();document.getElementById('edit-product-id').value='';document.getElementById('admin-save-btn').innerHTML='<i class="fa-solid fa-plus mr-1"></i> Product Add করুন';}
+function saveProductFromForm(e){e.preventDefault();let edit=Number(document.getElementById('edit-product-id').value)||0;let p={id:edit||Date.now(),name:admin('name'),category:document.getElementById('admin-category').value,price:Number(admin('price')),cost:document.getElementById('admin-cost').value===''?null:Number(admin('cost')),unit:admin('unit')||'পিস',image:admin('image')||'https://via.placeholder.com/600x400?text=UrbanMati',description:admin('description')||'UrbanMati-এর মানসম্মত gardening product।',details:admin('details')||'পণ্যের বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।'};if(edit){let i=customProducts.findIndex(x=>x.id===edit);if(i<0)return;customProducts[i]=p;showToast('Product update হয়েছে ✓')}else{customProducts.push(p);showToast('নতুন Product যোগ হয়েছে ✓')}saveCustomProducts();products=products.filter(x=>!customProducts.some(c=>c.id===x.id)).concat(customProducts);resetProductForm();renderProducts();renderAdminProducts();}
+function admin(k){return document.getElementById('admin-'+k).value.trim();}
+function editCustomProduct(id){let p=customProducts.find(x=>x.id===id);if(!p)return;document.getElementById('edit-product-id').value=p.id;document.getElementById('admin-name').value=p.name;document.getElementById('admin-category').value=p.category;document.getElementById('admin-price').value=p.price;document.getElementById('admin-cost').value=p.cost??'';document.getElementById('admin-unit').value=p.unit;document.getElementById('admin-image').value=p.image;document.getElementById('admin-description').value=p.description;document.getElementById('admin-details').value=p.details;document.getElementById('admin-save-btn').innerHTML='<i class="fa-solid fa-pen mr-1"></i> Product Update করুন';}
+function deleteCustomProduct(id){if(!confirm('এই Product delete করতে চান?'))return;customProducts=customProducts.filter(x=>x.id!==id);saveCustomProducts();products=products.filter(x=>x.id!==id);renderProducts();renderAdminProducts();showToast('Product delete হয়েছে');}
+function renderAdminProducts(){let b=document.getElementById('admin-product-list');document.getElementById('admin-product-count').innerText=customProducts.length+'টি added product';if(!customProducts.length){b.innerHTML='<p class="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">এখনো কোনো নতুন product যোগ করা হয়নি।</p>';return;}b.innerHTML=customProducts.map(p=>`<div class="border rounded-xl p-3 flex gap-3 items-center"><img src="${p.image}" onerror="this.src='https://via.placeholder.com/80?text=IMG'" class="w-14 h-14 rounded-lg object-cover"><div class="flex-1"><b class="text-sm">${p.name}</b><div class="text-xs text-gray-500">${p.category} • ৳${p.price} / ${p.unit}</div></div><button onclick="editCustomProduct(${p.id})" class="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg"><i class="fa-solid fa-pen"></i></button><button onclick="deleteCustomProduct(${p.id})" class="bg-red-50 text-red-700 px-3 py-2 rounded-lg"><i class="fa-solid fa-trash"></i></button></div>`).join('');}
 
 /* =========================================================
    🛒 CART

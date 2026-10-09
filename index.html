@@ -18,6 +18,9 @@ body{font-family:'Hind Siliguri',sans-serif}
 input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5,150,105,.25);border-color:#059669}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 
 <body class="bg-emerald-50/30 text-gray-800 min-h-screen flex flex-col">
@@ -102,8 +105,25 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
   <div class="text-center text-xs text-emerald-500 border-t border-emerald-800 mt-6 pt-4">&copy; 2026 UrbanMati. All rights reserved.</div>
 </footer>
 
+<!-- SECURE ADMIN LOGIN MODAL -->
+<div id="admin-login-modal" class="hidden fixed inset-0 modal-bg z-[95] p-3 sm:p-5 overflow-y-auto">
+  <div class="bg-white max-w-md mx-auto rounded-2xl shadow-2xl overflow-hidden mt-10">
+    <div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center">
+      <div><h3 class="text-xl font-bold">🔐 Admin Login</h3><p class="text-xs text-emerald-200">শুধু অনুমোদিত Admin প্রবেশ করতে পারবেন</p></div>
+      <button onclick="closeAdminLogin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form onsubmit="loginAdmin(event)" class="p-5 space-y-4">
+      <div><label class="block text-sm font-semibold mb-1">Admin Email</label><input id="admin-email" type="email" autocomplete="username" required class="w-full border rounded-xl px-3 py-3" placeholder="Admin email"></div>
+      <div><label class="block text-sm font-semibold mb-1">Password</label><input id="admin-password" type="password" autocomplete="current-password" required class="w-full border rounded-xl px-3 py-3" placeholder="Password"></div>
+      <p id="admin-login-error" class="hidden text-sm text-red-600"></p>
+      <button id="admin-login-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl">Login করুন</button>
+      <p class="text-xs text-gray-500">Firebase Authentication দিয়ে লগইন হবে। Admin পাসওয়ার্ড কখনো HTML কোডে লিখবেন না।</p>
+    </form>
+  </div>
+</div>
+
 <!-- PRODUCT MANAGEMENT MODAL -->
-<div id="admin-modal" class="hidden fixed inset-0 modal-bg z-[90] p-3 sm:p-5 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8"><div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center"><div><h3 class="text-xl font-bold">⚙️ Product Management</h3><p class="text-xs text-emerald-200">নতুন Product যোগ, Edit বা Delete করুন</p></div><button onclick="closeAdmin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs text-amber-800">⚠️ এইভাবে যোগ করা Product এই browser/device-এর localStorage-এ থাকবে।</div><form onsubmit="saveProductFromForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><input type="hidden" id="edit-product-id"><div><label class="block text-sm font-semibold mb-1">Product Name *</label><input id="admin-name" required class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Category *</label><select id="admin-category" required class="w-full border rounded-xl px-3 py-2.5 bg-white"><option>গাছ ও বীজ</option><option>টব ও পাত্র</option><option>গ্রোথ মিডিয়া ও সার</option></select></div><div><label class="block text-sm font-semibold mb-1">Selling Price (৳) *</label><input id="admin-price" required type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Cost Price (৳)</label><input id="admin-cost" type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Unit / Size</label><input id="admin-unit" class="w-full border rounded-xl px-3 py-2.5" placeholder="পিস / 1 কেজি / 10 গ্রাম"></div><div><label class="block text-sm font-semibold mb-1">Image URL</label><input id="admin-image" class="w-full border rounded-xl px-3 py-2.5" placeholder="https://... বা image-file.jpg"></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Short Description</label><textarea id="admin-description" rows="2" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Full Details</label><textarea id="admin-details" rows="3" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2 flex gap-2"><button id="admin-save-btn" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Product Add করুন</button><button type="button" onclick="resetProductForm()" class="px-5 bg-gray-100 font-bold rounded-xl">Clear</button></div></form><div class="border-t mt-7 pt-5"><div class="flex justify-between mb-3"><h4 class="font-bold text-lg text-emerald-900">Added Products</h4><span id="admin-product-count" class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span></div><div id="admin-product-list" class="space-y-2"></div></div></div></div></div>
+<div id="admin-modal" class="hidden fixed inset-0 modal-bg z-[90] p-3 sm:p-5 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8"><div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center"><div><h3 class="text-xl font-bold">⚙️ Product Management</h3><p class="text-xs text-emerald-200">Firebase-এ সেভ হবে; সব ডিভাইসে আপডেট দেখা যাবে</p></div><div class="flex gap-2"><button onclick="logoutAdmin()" class="text-xs bg-white/15 px-3 py-2 rounded-lg">Logout</button><button onclick="closeAdmin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button></div></div><div class="p-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs text-amber-800">✅ পণ্যের তথ্য Firebase Firestore-এ সংরক্ষিত হবে। পণ্যের স্টক ফাঁকা রাখলে স্টক ট্র্যাক করা হবে না।</div><form onsubmit="saveProductFromForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><input type="hidden" id="edit-product-id"><div><label class="block text-sm font-semibold mb-1">Product Name *</label><input id="admin-name" required class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Category *</label><select id="admin-category" required class="w-full border rounded-xl px-3 py-2.5 bg-white"><option>গাছ ও বীজ</option><option>টব ও পাত্র</option><option>গ্রোথ মিডিয়া ও সার</option></select></div><div><label class="block text-sm font-semibold mb-1">Selling Price (৳) *</label><input id="admin-price" required type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Cost Price (৳)</label><input id="admin-cost" type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Stock Quantity (ঐচ্ছিক)</label><input id="admin-stock" type="number" min="0" step="1" class="w-full border rounded-xl px-3 py-2.5" placeholder="যেমন 25"></div><div><label class="block text-sm font-semibold mb-1">Unit / Size</label><input id="admin-unit" class="w-full border rounded-xl px-3 py-2.5" placeholder="পিস / 1 কেজি / 10 গ্রাম"></div><div><label class="block text-sm font-semibold mb-1">Image URL</label><input id="admin-image" class="w-full border rounded-xl px-3 py-2.5" placeholder="https://... বা image-file.jpg"></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Short Description</label><textarea id="admin-description" rows="2" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Full Details</label><textarea id="admin-details" rows="3" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2 flex gap-2"><button id="admin-save-btn" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Product Add করুন</button><button type="button" onclick="resetProductForm()" class="px-5 bg-gray-100 font-bold rounded-xl">Clear</button></div></form><div class="border-t mt-7 pt-5"><div class="flex justify-between mb-3"><h4 class="font-bold text-lg text-emerald-900">Added Products</h4><span id="admin-product-count" class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span></div><div id="admin-product-list" class="space-y-2"></div></div></div></div></div>
 
 <!-- PRODUCT DETAILS MODAL -->
 <div id="product-modal" class="hidden fixed inset-0 modal-bg z-[80] p-3 sm:p-5 overflow-y-auto">
@@ -223,7 +243,7 @@ let products = [
   {id:10,name:"বারোমাসি মিষ্টি কুমড়া Seed",category:"গাছ ও বীজ",price:60,cost:40,unit:"10 গ্রাম",image:"pumpkin-seed.jpg",description:"বারোমাসি মিষ্টি কুমড়া চাষের জন্য বীজ।",details:"তোমার দেওয়া cost 10g = ৳40। পর্যাপ্ত জায়গা ও মাচা থাকলে ভালো ফলন পাওয়া যায়।"},
 
   {id:11,name:"Vermicompost",category:"গ্রোথ মিডিয়া ও সার",price:50,cost:15,unit:"1 কেজি",image:"vermicompost.png",description:"জৈব কেঁচো সার—গাছের বৃদ্ধি ও মাটির গুণমান উন্নত করতে ব্যবহার করা যায়।",details:"টবের মাটির সঙ্গে পরিমিত পরিমাণে মিশিয়ে ব্যবহার করুন।"},
-  {id:11,name:"ShonarDana",category:"গ্রোথ মিডিয়া ও সার",price:80,cost:50,unit:"1 কেজি",image:"sonardana-1.jpg",description:"কেরুজ জৈব সার—ছাদ বাগান ও ইনডোর গাছের জন্য পরিবেশবান্ধব অর্গানিক নিউট্রিশন।",details:"টবেটির সঙ্গে পরির মামিত পরিমাণে মিশিয়ে ব্যবহার করুন।চার ভাগের এক ভাগ অনুপাতে , স্বাভাবিক ব্যবহার এ অল্প পরিমান ব্যবহার করবেন"},
+  {id:22,name:"ShonarDana",category:"গ্রোথ মিডিয়া ও সার",price:80,cost:50,unit:"1 কেজি",image:"sonardana-1.jpg",description:"কেরুজ জৈব সার—ছাদ বাগান ও ইনডোর গাছের জন্য পরিবেশবান্ধব অর্গানিক নিউট্রিশন।",details:"টবেটির সঙ্গে পরির মামিত পরিমাণে মিশিয়ে ব্যবহার করুন।চার ভাগের এক ভাগ অনুপাতে , স্বাভাবিক ব্যবহার এ অল্প পরিমান ব্যবহার করবেন"},
   {id:12,name:"Cow Manure",category:"গ্রোথ মিডিয়া ও সার",price:40,cost:15,unit:"1 কেজি",image:"dry-compost.png",description:"প্রক্রিয়াজাত শুষ্ক গোবর সার।",details:"টবের মাটির সঙ্গে মিশিয়ে ব্যবহার করুন; কাঁচা গোবর সরাসরি শিকড়ে না দেওয়াই ভালো।"},
   {id:13,name:"দোআঁশ মাটি",category:"গ্রোথ মিডিয়া ও সার",price:40,cost:10,unit:"5 কেজি",image:"doash-mati.jpg",description:"বাগান ও টবের জন্য দোআঁশ মাটি।",details:"অন্যান্য উপাদানের সঙ্গে মিশিয়ে ব্যবহার করলে টবের growing media তৈরি করা যায়।"},
   {id:14,name:"Ready Soil / Ready Potting Mix",category:"গ্রোথ মিডিয়া ও সার",price:80,cost:20,unit:"5 কেজি",image:"ready-soil.jpg",description:"টবের গাছ লাগানোর জন্য প্রস্তুত মাটির মিশ্রণ।",details:"টব ভরার জন্য সরাসরি ব্যবহার বা প্রয়োজন অনুযায়ী compost-এর সঙ্গে মিশিয়ে ব্যবহার করতে পারেন।"},
@@ -238,18 +258,164 @@ let products = [
   {id:21,name:"Hand Pump Trigger Sprayer",category:"টব ও পাত্র",price:60,cost:30,unit:"পিস",image:"trigger-sprayer.jpg",description:"গাছে পানি বা উপযুক্ত liquid solution spray করার জন্য hand-pump trigger।",details:"ব্যবহারের আগে যে solution spray করবেন তার label-এর নির্দেশনা অনুসরণ করুন।"}
 ];
 
-/* USER-ADDED PRODUCTS */
-let customProducts=JSON.parse(localStorage.getItem("urbanmati_custom_products")||"[]");
-products=products.concat(customProducts);
-function saveCustomProducts(){localStorage.setItem("urbanmati_custom_products",JSON.stringify(customProducts));}
-function openAdmin(){document.getElementById("admin-modal").classList.remove("hidden");document.body.classList.add("no-scroll");renderAdminProducts();}
-function closeAdmin(){document.getElementById("admin-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
+/* =========================================================
+   🔐 FIREBASE + SECURE ADMIN PRODUCT MANAGEMENT
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDf4PeCo5WGFXHe7ZydRDgx5jyH0ho3RUw",
+  authDomain: "urbanmati-a4cf5.firebaseapp.com",
+  projectId: "urbanmati-a4cf5",
+  storageBucket: "urbanmati-a4cf5.firebasestorage.app",
+  messagingSenderId: "76542139677",
+  appId: "1:76542139677:web:a44ae2323ce2eca50315f4",
+  measurementId: "G-SSJ9F384CT"
+};
+const ADMIN_UID = "P5Uf6xWE7Ob8PczeIbHcwe4mg7N2";
+const DEFAULT_PRODUCTS = products.map(p => ({...p}));
+const DEFAULT_PRODUCT_IDS = new Set(DEFAULT_PRODUCTS.map(p => String(p.id)));
+let auth = null, db = null, currentAdmin = null;
+try {
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  auth = firebase.auth();
+  db = firebase.firestore();
+  auth.onAuthStateChanged(user => { currentAdmin = user && user.uid === ADMIN_UID ? user : null; });
+} catch (err) {
+  console.error("Firebase initialization error:", err);
+}
+
+function openAdmin(){
+  if (!auth || !db) { showToast("Firebase চালু হয়নি। ইন্টারনেট ও Firebase config পরীক্ষা করুন।"); return; }
+  if (currentAdmin && currentAdmin.uid === ADMIN_UID) {
+    document.getElementById("admin-modal").classList.remove("hidden");
+    document.body.classList.add("no-scroll");
+    renderAdminProducts();
+  } else {
+    document.getElementById("admin-login-modal").classList.remove("hidden");
+    document.body.classList.add("no-scroll");
+  }
+}
+function closeAdminLogin(){document.getElementById("admin-login-modal").classList.add("hidden");if(document.getElementById("admin-modal").classList.contains("hidden") && document.getElementById("product-modal").classList.contains("hidden") && document.getElementById("cart-modal").classList.contains("hidden") && document.getElementById("checkout-modal").classList.contains("hidden"))document.body.classList.remove("no-scroll");}
+function closeAdmin(){document.getElementById("admin-modal").classList.add("hidden");if(document.getElementById("admin-login-modal").classList.contains("hidden"))document.body.classList.remove("no-scroll");}
+async function loginAdmin(e){
+  e.preventDefault();
+  const errorBox=document.getElementById("admin-login-error"),btn=document.getElementById("admin-login-btn");
+  errorBox.classList.add("hidden"); btn.disabled=true; btn.innerText="Login হচ্ছে...";
+  try {
+    const cred=await auth.signInWithEmailAndPassword(document.getElementById("admin-email").value.trim(),document.getElementById("admin-password").value);
+    if(cred.user.uid!==ADMIN_UID){await auth.signOut();throw new Error("এই Email-এর Admin অনুমতি নেই। সঠিক Admin account ব্যবহার করুন।");}
+    currentAdmin=cred.user;
+    await seedDefaultProductsIfMissing();
+    await loadProductsFromFirebase();
+    closeAdminLogin();
+    document.getElementById("admin-modal").classList.remove("hidden");
+    document.body.classList.add("no-scroll");
+    renderAdminProducts(); showToast("Admin login সফল হয়েছে ✓");
+  } catch(err) {
+    errorBox.textContent=err.message || "Login হয়নি। Email ও Password পরীক্ষা করুন।";
+    errorBox.classList.remove("hidden");
+  } finally {btn.disabled=false;btn.innerText="Login করুন";}
+}
+async function logoutAdmin(){
+  if(!auth)return;
+  try{await auth.signOut();currentAdmin=null;closeAdmin();showToast("Admin logout হয়েছে");}
+  catch(err){showToast("Logout করা যায়নি");}
+}
+function requireAdmin(){if(!currentAdmin || currentAdmin.uid!==ADMIN_UID)throw new Error("Admin হিসেবে login করুন।");}
+async function seedDefaultProductsIfMissing(){
+  requireAdmin();
+  const snap=await db.collection("products").get();
+  const existing=new Set(snap.docs.map(d=>d.id));
+  const batch=db.batch();
+  let count=0;
+  DEFAULT_PRODUCTS.forEach(p=>{
+    const id=String(p.id);
+    if(!existing.has(id)){
+      batch.set(db.collection("products").doc(id),{...p,active:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      existing.add(id); count++;
+    }
+  });
+  // Migrate products previously saved only in this browser's localStorage, without overwriting cloud data.
+  let oldLocal=[];
+  try{oldLocal=JSON.parse(localStorage.getItem("urbanmati_custom_products")||"[]");}catch(_){oldLocal=[];}
+  oldLocal.forEach(p=>{
+    if(!p || p.id===undefined || !p.name)return;
+    const id=String(p.id);
+    if(!existing.has(id)){
+      batch.set(db.collection("products").doc(id),{...p,active:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      existing.add(id); count++;
+    }
+  });
+  if(count){await batch.commit();showToast("প্রাথমিক ও আগের saved পণ্য Firebase-এ যোগ হয়েছে ✓");}
+}
+async function loadProductsFromFirebase(){
+  try {
+    const snap=await db.collection("products").get();
+    const remote=new Map(),hidden=new Set(),extras=[];
+    snap.forEach(doc=>{
+      const d=doc.data();
+      if(d.name==="Test Product")return;
+      const id=String(d.id ?? doc.id);
+      if(d.active===false){hidden.add(id);return;}
+      const p={...d,id:Number.isFinite(Number(id))?Number(id):id};
+      if(DEFAULT_PRODUCT_IDS.has(id))remote.set(id,p);else extras.push(p);
+    });
+    products=DEFAULT_PRODUCTS.filter(p=>!hidden.has(String(p.id))).map(p=>({...p,...(remote.get(String(p.id))||{}),id:p.id}));
+    extras.forEach(p=>{if(!products.some(x=>String(x.id)===String(p.id)))products.push(p);});
+    renderProducts(); updateCartUI();
+    if(!document.getElementById("admin-modal").classList.contains("hidden"))renderAdminProducts();
+  } catch(err) {
+    console.error("Could not load Firestore products:",err);
+    showToast("Firebase data লোড হয়নি; আপাতত প্রাথমিক পণ্য দেখানো হচ্ছে।");
+  }
+}
 function resetProductForm(){document.querySelector('#admin-modal form').reset();document.getElementById('edit-product-id').value='';document.getElementById('admin-save-btn').innerHTML='<i class="fa-solid fa-plus mr-1"></i> Product Add করুন';}
-function saveProductFromForm(e){e.preventDefault();let edit=Number(document.getElementById('edit-product-id').value)||0;let p={id:edit||Date.now(),name:admin('name'),category:document.getElementById('admin-category').value,price:Number(admin('price')),cost:document.getElementById('admin-cost').value===''?null:Number(admin('cost')),unit:admin('unit')||'পিস',image:admin('image')||'https://via.placeholder.com/600x400?text=UrbanMati',description:admin('description')||'UrbanMati-এর মানসম্মত gardening product।',details:admin('details')||'পণ্যের বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।'};if(edit){let i=customProducts.findIndex(x=>x.id===edit);if(i<0)return;customProducts[i]=p;showToast('Product update হয়েছে ✓')}else{customProducts.push(p);showToast('নতুন Product যোগ হয়েছে ✓')}saveCustomProducts();products=products.filter(x=>!customProducts.some(c=>c.id===x.id)).concat(customProducts);resetProductForm();renderProducts();renderAdminProducts();}
+async function saveProductFromForm(e){
+  e.preventDefault();
+  try{
+    requireAdmin();
+    const editRaw=document.getElementById('edit-product-id').value;
+    const edit=editRaw!==''?editRaw:null;
+    const id=edit===null?String(Date.now()):String(edit);
+    const stockValue=admin('stock');
+    const p={id:Number.isFinite(Number(id))?Number(id):id,name:admin('name'),category:document.getElementById('admin-category').value,price:Number(admin('price')),cost:document.getElementById('admin-cost').value===''?null:Number(admin('cost')),stock:stockValue===''?null:Number(stockValue),unit:admin('unit')||'পিস',image:admin('image')||'https://placehold.co/600x400?text=UrbanMati',description:admin('description')||'UrbanMati-এর মানসম্মত gardening product।',details:admin('details')||'পণ্যের বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।',active:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+    await db.collection('products').doc(id).set(p,{merge:true});
+    await loadProductsFromFirebase(); resetProductForm(); renderAdminProducts();
+    showToast(edit!==null?'Product update হয়েছে ✓':'নতুন Product Firebase-এ যোগ হয়েছে ✓');
+  }catch(err){console.error(err);showToast(err.message||'Product save হয়নি। Firebase Rules পরীক্ষা করুন।');}
+}
 function admin(k){return document.getElementById('admin-'+k).value.trim();}
-function editCustomProduct(id){let p=customProducts.find(x=>x.id===id);if(!p)return;document.getElementById('edit-product-id').value=p.id;document.getElementById('admin-name').value=p.name;document.getElementById('admin-category').value=p.category;document.getElementById('admin-price').value=p.price;document.getElementById('admin-cost').value=p.cost??'';document.getElementById('admin-unit').value=p.unit;document.getElementById('admin-image').value=p.image;document.getElementById('admin-description').value=p.description;document.getElementById('admin-details').value=p.details;document.getElementById('admin-save-btn').innerHTML='<i class="fa-solid fa-pen mr-1"></i> Product Update করুন';}
-function deleteCustomProduct(id){if(!confirm('এই Product delete করতে চান?'))return;customProducts=customProducts.filter(x=>x.id!==id);saveCustomProducts();products=products.filter(x=>x.id!==id);renderProducts();renderAdminProducts();showToast('Product delete হয়েছে');}
-function renderAdminProducts(){let b=document.getElementById('admin-product-list');document.getElementById('admin-product-count').innerText=customProducts.length+'টি added product';if(!customProducts.length){b.innerHTML='<p class="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">এখনো কোনো নতুন product যোগ করা হয়নি।</p>';return;}b.innerHTML=customProducts.map(p=>`<div class="border rounded-xl p-3 flex gap-3 items-center"><img src="${p.image}" onerror="this.src='https://via.placeholder.com/80?text=IMG'" class="w-14 h-14 rounded-lg object-cover"><div class="flex-1"><b class="text-sm">${p.name}</b><div class="text-xs text-gray-500">${p.category} • ৳${p.price} / ${p.unit}</div></div><button onclick="editCustomProduct(${p.id})" class="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg"><i class="fa-solid fa-pen"></i></button><button onclick="deleteCustomProduct(${p.id})" class="bg-red-50 text-red-700 px-3 py-2 rounded-lg"><i class="fa-solid fa-trash"></i></button></div>`).join('');}
+function editCustomProduct(id){
+  if(!currentAdmin || currentAdmin.uid!==ADMIN_UID){showToast('Admin হিসেবে login করুন');return;}
+  const p=products.find(x=>String(x.id)===String(id));if(!p)return;
+  document.getElementById('edit-product-id').value=p.id;
+  document.getElementById('admin-name').value=p.name||'';
+  document.getElementById('admin-category').value=p.category||'গাছ ও বীজ';
+  document.getElementById('admin-price').value=p.price??'';
+  document.getElementById('admin-cost').value=p.cost??'';
+  document.getElementById('admin-stock').value=p.stock??'';
+  document.getElementById('admin-unit').value=p.unit||'';
+  document.getElementById('admin-image').value=p.image||'';
+  document.getElementById('admin-description').value=p.description||'';
+  document.getElementById('admin-details').value=p.details||'';
+  document.getElementById('admin-save-btn').innerHTML='<i class="fa-solid fa-pen mr-1"></i> Product Update করুন';
+  document.getElementById('admin-modal').scrollTo({top:0,behavior:'smooth'});
+}
+async function deleteCustomProduct(id){
+  if(!confirm('এই Product-টি ওয়েবসাইট থেকে সরাতে চান?'))return;
+  try{
+    requireAdmin();
+    const ref=db.collection('products').doc(String(id));
+    if(DEFAULT_PRODUCT_IDS.has(String(id))) await ref.set({active:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    else await ref.delete();
+    await loadProductsFromFirebase();renderAdminProducts();resetProductForm();showToast('Product delete হয়েছে ✓');
+  }catch(err){console.error(err);showToast(err.message||'Delete করা যায়নি।');}
+}
+function renderAdminProducts(){
+  const b=document.getElementById('admin-product-list');
+  document.getElementById('admin-product-count').innerText=products.length+'টি active product';
+  if(!products.length){b.innerHTML='<p class="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">কোনো active product নেই।</p>';return;}
+  b.innerHTML=products.map(p=>`<div class="border rounded-xl p-3 flex gap-3 items-center"><img src="${p.image||''}" onerror="this.src='https://placehold.co/80x80?text=IMG'" class="w-14 h-14 rounded-lg object-cover"><div class="flex-1 min-w-0"><b class="text-sm">${p.name}</b><div class="text-xs text-gray-500">${p.category} • ৳${p.price} / ${p.unit||'পিস'} • স্টক: ${p.stock===null||p.stock===undefined?'সেট করা হয়নি':p.stock}</div></div><button onclick="editCustomProduct('${String(p.id).replace(/'/g,"\\'")}')" class="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="deleteCustomProduct('${String(p.id).replace(/'/g,"\\'")}')" class="bg-red-50 text-red-700 px-3 py-2 rounded-lg" title="Delete"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+}
 
 /* =========================================================
    🛒 CART
@@ -268,8 +434,8 @@ function updateCartUI(){
   document.getElementById("cart-bar-total").innerText=t;
   document.getElementById("cart-bar").classList.toggle("hidden",c===0);
 }
-function addToCart(id){cart[id]=(cart[id]||0)+1;saveCart();showToast("পণ্যটি কার্টে যোগ হয়েছে ✓");}
-function changeCartQty(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];saveCart();renderCart();if(!cartCount())closeCart();}
+function addToCart(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;if(p.stock!==null&&p.stock!==undefined&&Number(p.stock)<=0){showToast("দুঃখিত, এই পণ্যের স্টক শেষ");return;}if(p.stock!==null&&p.stock!==undefined&&Number(cart[id]||0)>=Number(p.stock)){showToast("স্টকে থাকা পরিমাণের বেশি যোগ করা যাবে না");return;}cart[id]=(cart[id]||0)+1;saveCart();showToast("পণ্যটি কার্টে যোগ হয়েছে ✓");}
+function changeCartQty(id,n){const p=products.find(x=>String(x.id)===String(id));const next=(cart[id]||0)+n;if(n>0&&p&&p.stock!==null&&p.stock!==undefined&&next>Number(p.stock)){showToast("স্টকে থাকা পরিমাণের বেশি যোগ করা যাবে না");return;}cart[id]=next;if(cart[id]<=0)delete cart[id];saveCart();renderCart();if(!cartCount())closeCart();}
 function removeFromCart(id){delete cart[id];saveCart();renderCart();showToast("পণ্যটি কার্ট থেকে সরানো হয়েছে");}
 
 function renderCart(){
@@ -321,10 +487,10 @@ function renderProducts(){
       </button>
       <div class="p-5 flex flex-col flex-1">
         <button onclick="openProductModal(${p.id})" class="text-left font-bold text-lg text-gray-800 mb-1 hover:text-emerald-700">${p.name}</button>
-        <p class="text-xs text-gray-500 mb-3 line-clamp-2">${p.description}</p>
+        <p class="text-xs text-gray-500 mb-3 line-clamp-2">${p.description}</p>${p.stock!==null&&p.stock!==undefined?`<p class="text-xs ${Number(p.stock)<=0?'text-red-600':'text-emerald-700'} mb-2">${Number(p.stock)<=0?'স্টক শেষ':`স্টকে আছে: ${p.stock}`}</p>`:''}
         <div class="text-emerald-700 font-extrabold text-xl mb-4">৳${p.price} <span class="text-xs font-normal text-gray-500">/ ${p.unit}</span></div>
-        <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center gap-2">
-          <i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন
+        <button ${p.stock!==null&&p.stock!==undefined&&Number(p.stock)<=0?'disabled':''} onclick="addToCart(${p.id})" class="mt-auto w-full ${p.stock!==null&&p.stock!==undefined&&Number(p.stock)<=0?'bg-gray-300 cursor-not-allowed':'bg-emerald-600 hover:bg-emerald-700'} text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cart-plus"></i> ${p.stock!==null&&p.stock!==undefined&&Number(p.stock)<=0?'স্টক শেষ':'কার্টে যোগ করুন'}
         </button>
       </div>
     </div>`).join("");
@@ -417,6 +583,7 @@ document.getElementById("wa-float").href=`https://wa.me/${whatsappNumber}`;
 const mf=document.getElementById("messenger-float");
 if(messengerPage)mf.href=messengerPage;else mf.style.display="none";
 renderProducts();updateCartUI();
+if(db) loadProductsFromFirebase();
 </script>
 </body>
 </html>

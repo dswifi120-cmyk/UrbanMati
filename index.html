@@ -34,7 +34,7 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
         <p class="text-[11px] sm:text-xs text-emerald-100">ছাদবাগান ও আধুনিক বাগানের উপকরণ</p>
       </div>
     </div>
-    <div class="flex items-center gap-2"><button onclick="openAdmin()" class="bg-emerald-800 text-white border border-emerald-500 rounded-xl px-3 py-2 font-bold shadow"><i class="fa-solid fa-gear"></i><span class="hidden sm:inline ml-1">Products</span></button><button onclick="openCart()" class="relative bg-white text-emerald-800 rounded-xl px-3 py-2 font-bold shadow hover:bg-emerald-50">
+    <div class="flex items-center gap-2"><button onclick="openCart()" class="relative bg-white text-emerald-800 rounded-xl px-3 py-2 font-bold shadow hover:bg-emerald-50">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="hidden sm:inline ml-1">কার্ট</span>
       <span id="cart-count" class="cart-badge absolute -top-2 -right-2 bg-amber-400 text-emerald-950 rounded-full text-xs flex items-center justify-center font-bold">0</span>
@@ -123,7 +123,7 @@ input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(5
 </div>
 
 <!-- PRODUCT MANAGEMENT MODAL -->
-<div id="admin-modal" class="hidden fixed inset-0 modal-bg z-[90] p-3 sm:p-5 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8"><div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center"><div><h3 class="text-xl font-bold">⚙️ Product Management</h3><p class="text-xs text-emerald-200">Firebase-এ সেভ হবে; সব ডিভাইসে আপডেট দেখা যাবে</p></div><div class="flex gap-2"><button onclick="logoutAdmin()" class="text-xs bg-white/15 px-3 py-2 rounded-lg">Logout</button><button onclick="closeAdmin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button></div></div><div class="p-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs text-amber-800">✅ পণ্যের তথ্য Firebase Firestore-এ সংরক্ষিত হবে। পণ্যের স্টক ফাঁকা রাখলে স্টক ট্র্যাক করা হবে না।</div><form onsubmit="saveProductFromForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><input type="hidden" id="edit-product-id"><div><label class="block text-sm font-semibold mb-1">Product Name *</label><input id="admin-name" required class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Category *</label><select id="admin-category" required class="w-full border rounded-xl px-3 py-2.5 bg-white"><option>গাছ ও বীজ</option><option>টব ও পাত্র</option><option>গ্রোথ মিডিয়া ও সার</option></select></div><div><label class="block text-sm font-semibold mb-1">Selling Price (৳) *</label><input id="admin-price" required type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Cost Price (৳)</label><input id="admin-cost" type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Stock Quantity (ঐচ্ছিক)</label><input id="admin-stock" type="number" min="0" step="1" class="w-full border rounded-xl px-3 py-2.5" placeholder="যেমন 25"></div><div><label class="block text-sm font-semibold mb-1">Unit / Size</label><input id="admin-unit" class="w-full border rounded-xl px-3 py-2.5" placeholder="পিস / 1 কেজি / 10 গ্রাম"></div><div><label class="block text-sm font-semibold mb-1">Image URL</label><input id="admin-image" class="w-full border rounded-xl px-3 py-2.5" placeholder="https://... বা image-file.jpg"></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Short Description</label><textarea id="admin-description" rows="2" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Full Details</label><textarea id="admin-details" rows="3" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2 flex gap-2"><button id="admin-save-btn" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Product Add করুন</button><button type="button" onclick="resetProductForm()" class="px-5 bg-gray-100 font-bold rounded-xl">Clear</button></div></form><div class="border-t mt-7 pt-5"><div class="flex justify-between mb-3"><h4 class="font-bold text-lg text-emerald-900">Added Products</h4><span id="admin-product-count" class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span></div><div id="admin-product-list" class="space-y-2"></div></div></div></div></div>
+<div id="admin-modal" class="hidden fixed inset-0 modal-bg z-[90] p-3 sm:p-5 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden mt-3 sm:mt-8"><div class="bg-emerald-800 text-white px-5 py-4 flex justify-between items-center"><div><h3 class="text-xl font-bold">⚙️ UrbanMati Admin</h3><p class="text-xs text-emerald-200">পণ্য ও অর্ডার ম্যানেজমেন্ট</p></div><div class="flex flex-wrap gap-2"><button onclick="showAdminPanel('products')" class="text-xs bg-white/15 px-3 py-2 rounded-lg">Products</button><button onclick="showAdminPanel('orders')" class="text-xs bg-white/15 px-3 py-2 rounded-lg">Orders</button><button onclick="logoutAdmin()" class="text-xs bg-white/15 px-3 py-2 rounded-lg">Logout</button><button onclick="closeAdmin()" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-xmark"></i></button></div></div><div id="admin-products-panel" class="p-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-xs text-amber-800">✅ পণ্যের তথ্য Firebase Firestore-এ সংরক্ষিত হবে। পণ্যের স্টক ফাঁকা রাখলে স্টক ট্র্যাক করা হবে না।</div><form onsubmit="saveProductFromForm(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4"><input type="hidden" id="edit-product-id"><div><label class="block text-sm font-semibold mb-1">Product Name *</label><input id="admin-name" required class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Category *</label><select id="admin-category" required class="w-full border rounded-xl px-3 py-2.5 bg-white"><option>গাছ ও বীজ</option><option>টব ও পাত্র</option><option>গ্রোথ মিডিয়া ও সার</option></select></div><div><label class="block text-sm font-semibold mb-1">Selling Price (৳) *</label><input id="admin-price" required type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Cost Price (৳)</label><input id="admin-cost" type="number" min="0" class="w-full border rounded-xl px-3 py-2.5"></div><div><label class="block text-sm font-semibold mb-1">Stock Quantity (ঐচ্ছিক)</label><input id="admin-stock" type="number" min="0" step="1" class="w-full border rounded-xl px-3 py-2.5" placeholder="যেমন 25"></div><div><label class="block text-sm font-semibold mb-1">Unit / Size</label><input id="admin-unit" class="w-full border rounded-xl px-3 py-2.5" placeholder="পিস / 1 কেজি / 10 গ্রাম"></div><div><label class="block text-sm font-semibold mb-1">Image URL</label><input id="admin-image" class="w-full border rounded-xl px-3 py-2.5" placeholder="https://... বা image-file.jpg"></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Short Description</label><textarea id="admin-description" rows="2" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2"><label class="block text-sm font-semibold mb-1">Full Details</label><textarea id="admin-details" rows="3" class="w-full border rounded-xl px-3 py-2.5"></textarea></div><div class="sm:col-span-2 flex gap-2"><button id="admin-save-btn" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Product Add করুন</button><button type="button" onclick="resetProductForm()" class="px-5 bg-gray-100 font-bold rounded-xl">Clear</button></div></form><div class="border-t mt-7 pt-5"><div class="flex justify-between mb-3"><h4 class="font-bold text-lg text-emerald-900">Added Products</h4><span id="admin-product-count" class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full"></span></div><div id="admin-product-list" class="space-y-2"></div></div></div><div id="admin-orders-panel" class="hidden p-5"><div class="flex flex-wrap justify-between items-center gap-3 mb-4"><div><h4 class="text-xl font-bold text-emerald-900">📦 Customer Orders</h4><p class="text-sm text-gray-500">WhatsApp-এ পাঠানো অর্ডারের কপি এখানে থাকবে</p></div><button onclick="renderAdminOrders()" class="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-lg font-semibold"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button></div><div id="admin-order-list" class="space-y-3"><p class="text-sm text-gray-500">Orders লোড হচ্ছে...</p></div></div></div></div></div>
 
 <!-- PRODUCT DETAILS MODAL -->
 <div id="product-modal" class="hidden fixed inset-0 modal-bg z-[80] p-3 sm:p-5 overflow-y-auto">
@@ -309,7 +309,7 @@ async function loginAdmin(e){
     closeAdminLogin();
     document.getElementById("admin-modal").classList.remove("hidden");
     document.body.classList.add("no-scroll");
-    renderAdminProducts(); showToast("Admin login সফল হয়েছে ✓");
+    renderAdminProducts(); renderAdminOrders(); showToast("Admin login সফল হয়েছে ✓");
   } catch(err) {
     errorBox.textContent=err.message || "Login হয়নি। Email ও Password পরীক্ষা করুন।";
     errorBox.classList.remove("hidden");
@@ -415,6 +415,47 @@ function renderAdminProducts(){
   document.getElementById('admin-product-count').innerText=products.length+'টি active product';
   if(!products.length){b.innerHTML='<p class="text-sm text-gray-500 bg-gray-50 rounded-xl p-4 text-center">কোনো active product নেই।</p>';return;}
   b.innerHTML=products.map(p=>`<div class="border rounded-xl p-3 flex gap-3 items-center"><img src="${p.image||''}" onerror="this.src='https://placehold.co/80x80?text=IMG'" class="w-14 h-14 rounded-lg object-cover"><div class="flex-1 min-w-0"><b class="text-sm">${p.name}</b><div class="text-xs text-gray-500">${p.category} • ৳${p.price} / ${p.unit||'পিস'} • স্টক: ${p.stock===null||p.stock===undefined?'সেট করা হয়নি':p.stock}</div></div><button onclick="editCustomProduct('${String(p.id).replace(/'/g,"\\'")}')" class="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="deleteCustomProduct('${String(p.id).replace(/'/g,"\\'")}')" class="bg-red-50 text-red-700 px-3 py-2 rounded-lg" title="Delete"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+}
+
+/* =========================================================
+   📦 ADMIN ORDER MANAGEMENT
+   ========================================================= */
+function showAdminPanel(panel){
+  if(!currentAdmin || currentAdmin.uid!==ADMIN_UID){showToast('Admin হিসেবে login করুন');return;}
+  const isOrders=panel==='orders';
+  document.getElementById('admin-products-panel').classList.toggle('hidden',isOrders);
+  document.getElementById('admin-orders-panel').classList.toggle('hidden',!isOrders);
+  if(isOrders)renderAdminOrders();
+}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+async function renderAdminOrders(){
+  const box=document.getElementById('admin-order-list');
+  if(!box)return;
+  if(!currentAdmin || currentAdmin.uid!==ADMIN_UID){box.innerHTML='<p class="text-sm text-red-600">অর্ডার দেখতে Admin Login করুন।</p>';return;}
+  if(!db){box.innerHTML='<p class="text-sm text-red-600">Firebase সংযোগ নেই।</p>';return;}
+  box.innerHTML='<p class="text-sm text-gray-500">অর্ডার লোড হচ্ছে...</p>';
+  try{
+    const snap=await db.collection('orders').orderBy('createdAt','desc').limit(100).get();
+    if(snap.empty){box.innerHTML='<div class="bg-gray-50 rounded-xl p-6 text-center text-gray-500">এখনো কোনো অর্ডার আসেনি।</div>';return;}
+    const statuses=['নতুন','কনফার্ম','প্যাকিং','পাঠানো হয়েছে','ডেলিভারি সম্পন্ন','বাতিল'];
+    box.innerHTML=snap.docs.map(doc=>{
+      const o=doc.data();
+      const date=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleString('bn-BD'):'সময় পাওয়া যায়নি';
+      const items=Array.isArray(o.items)?o.items:[];
+      const itemsHtml=items.map(i=>`<div class="flex justify-between gap-3 text-sm py-1"><span>${escapeHtml(i.name)} × ${Number(i.qty)||0}</span><b>৳${Number(i.lineTotal)||0}</b></div>`).join('');
+      const status= statuses.includes(o.status)?o.status:'নতুন';
+      return `<article class="border border-emerald-100 rounded-xl p-4 shadow-sm"><div class="flex flex-wrap justify-between gap-2"><div><b class="text-emerald-900">অর্ডার #${escapeHtml(doc.id.slice(-7).toUpperCase())}</b><p class="text-xs text-gray-500 mt-1">${escapeHtml(date)}</p></div><b class="text-emerald-700">৳${Number(o.estimatedTotal)||Number(o.subtotal)||0}</b></div><div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm"><p>👤 ${escapeHtml(o.customer?.name)}</p><p>📞 <a class="text-blue-700 underline" href="tel:${escapeHtml(o.customer?.phone)}">${escapeHtml(o.customer?.phone)}</a></p><p>📍 ${escapeHtml(o.customer?.districtName)}</p><p>🚚 ${escapeHtml(o.delivery?.label||'চার্জ নিশ্চিত করতে হবে')}</p></div><p class="text-sm mt-2">🏠 ${escapeHtml(o.customer?.address)}</p>${o.customer?.note?`<p class="text-sm mt-1">📝 ${escapeHtml(o.customer.note)}</p>`:''}<div class="bg-gray-50 rounded-lg p-3 mt-3">${itemsHtml}<div class="border-t mt-2 pt-2 flex justify-between text-sm"><span>পণ্যের মূল্য</span><b>৳${Number(o.subtotal)||0}</b></div></div><div class="flex flex-wrap items-center gap-2 mt-3"><label class="text-sm font-semibold">Status:</label><select onchange="updateOrderStatus('${doc.id}',this.value)" class="border rounded-lg px-3 py-2 text-sm bg-white">${statuses.map(st=>`<option ${st===status?'selected':''}>${st}</option>`).join('')}</select><a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent('UrbanMati order '+doc.id+' | Customer: '+(o.customer?.name||'')+' | Status: '+status)}" target="_blank" rel="noopener" class="bg-green-100 text-green-800 rounded-lg px-3 py-2 text-sm font-semibold">WhatsApp</a></div></article>`;
+    }).join('');
+  }catch(err){console.error('Order load error',err);box.innerHTML='<div class="bg-red-50 text-red-700 rounded-xl p-4 text-sm">অর্ডার লোড হয়নি। Firestore Rules-এ orders-এর Admin read permission যোগ হয়েছে কি না দেখুন।</div>';}
+}
+async function updateOrderStatus(orderId,status){
+  try{
+    requireAdmin();
+    const allowed=['নতুন','কনফার্ম','প্যাকিং','পাঠানো হয়েছে','ডেলিভারি সম্পন্ন','বাতিল'];
+    if(!allowed.includes(status))throw new Error('Status সঠিক নয়');
+    await db.collection('orders').doc(orderId).update({status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+    showToast('অর্ডারের Status আপডেট হয়েছে ✓');
+  }catch(err){console.error(err);showToast(err.message||'Status আপডেট হয়নি');renderAdminOrders();}
 }
 
 /* =========================================================
@@ -544,7 +585,7 @@ function openCheckout(){
 }
 function closeCheckout(){document.getElementById("checkout-modal").classList.add("hidden");document.body.classList.remove("no-scroll");}
 
-function sendOrderToWhatsApp(){
+async function sendOrderToWhatsApp(){
   const name=document.getElementById("customer-name").value.trim();
   const phone=document.getElementById("customer-phone").value.trim();
   const district=document.getElementById("customer-district").value;
@@ -555,21 +596,37 @@ function sendOrderToWhatsApp(){
   if(!district){showToast("ডেলিভারি জেলা নির্বাচন করুন");return;}
   if(!address){showToast("ডেলিভারি ঠিকানা দিন");return;}
   const items=getCartItems();if(!items.length){showToast("কার্ট খালি");return;}
+  if(!db){showToast("Firebase সংযোগ নেই; অর্ডার সেভ হয়নি। পরে আবার চেষ্টা করুন।");return;}
   const d=getDeliveryInfo(),districtName=district==="bogura"?"বগুড়া":"অন্যান্য জেলা";
-  let message=`হ্যালো UrbanMati (আরবান মাটি),%0A%0Aআমি একটি নতুন অর্ডার করতে চাই।%0A%0A`;
-  message+=`👤 নাম: ${encodeURIComponent(name)}%0A`;
-  message+=`📞 মোবাইল: ${encodeURIComponent(phone)}%0A`;
-  message+=`📍 জেলা: ${encodeURIComponent(districtName)}%0A`;
-  message+=`🏠 ঠিকানা: ${encodeURIComponent(address)}%0A`;
-  if(note)message+=`📝 নোট: ${encodeURIComponent(note)}%0A`;
-  message+=`%0A🛒 *অর্ডারের তালিকা:*%0A`;
-  items.forEach((p,i)=>{message+=`${i+1}. ${encodeURIComponent(p.name)} — ${p.qty} ${encodeURIComponent(p.unit)} × ৳${p.price} = ৳${p.price*p.qty}%0A`;});
-  message+=`%0A💰 *মোট পণ্য মূল্য: ৳${cartTotal()}*%0A`;
-  if(d.known)message+=`🚚 *ডেলিভারি: ${d.fee===0?"FREE":"৳"+d.fee}*%0A`;
-  else message+=`🚚 *ডেলিভারি: ${encodeURIComponent(outsideBoguraDeliveryText)}*%0A`;
-  message+=`💵 *অনুমানিত মোট: ৳${cartTotal()+d.fee}*%0A%0Aঅনুগ্রহ করে অর্ডারটি কনফার্ম করুন।`;
-  window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
-  cart={};saveCart();closeCheckout();showToast("অর্ডার WhatsApp-এ পাঠানো হয়েছে ✓");
+  const subtotal=cartTotal();
+  const orderItems=items.map(p=>({productId:String(p.id),name:String(p.name),unit:String(p.unit||'পিস'),price:Number(p.price),qty:Number(p.qty),lineTotal:Number(p.price)*Number(p.qty)}));
+  const deliveryLabel=d.known?(d.fee===0?'FREE':'৳'+d.fee):outsideBoguraDeliveryText;
+  const estimatedTotal=subtotal+d.fee;
+  const orderPayload={customer:{name,phone,district,districtName,address,note},items:orderItems,subtotal,delivery:{fee:d.fee,known:d.known,label:deliveryLabel},estimatedTotal,status:'নতুন',source:'website-whatsapp',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  const btn=document.querySelector('#checkout-modal button[onclick="sendOrderToWhatsApp()"]');
+  // Open a tab directly from the click to reduce popup-blocker issues while Firebase saves.
+  const waWindow=window.open('about:blank','_blank');
+  if(btn){btn.disabled=true;btn.classList.add('opacity-60');}
+  try{
+    const orderRef=await db.collection('orders').add(orderPayload);
+    let message=`হ্যালো UrbanMati (আরবান মাটি),\n\nআমি একটি নতুন অর্ডার করতে চাই।\nঅর্ডার ID: ${orderRef.id}\n\n`;
+    message+=`👤 নাম: ${name}\n📞 মোবাইল: ${phone}\n📍 জেলা: ${districtName}\n🏠 ঠিকানা: ${address}\n`;
+    if(note)message+=`📝 নোট: ${note}\n`;
+    message+='\n🛒 অর্ডারের তালিকা:\n';
+    items.forEach((p,i)=>{message+=`${i+1}. ${p.name} — ${p.qty} ${p.unit} × ৳${p.price} = ৳${p.price*p.qty}\n`;});
+    message+=`\nমোট পণ্য মূল্য: ৳${subtotal}\n🚚 ডেলিভারি: ${deliveryLabel}\n💵 আনুমানিক মোট: ৳${estimatedTotal}\n\nঅনুগ্রহ করে অর্ডারটি কনফার্ম করুন।`;
+    // Open WhatsApp only after Firestore confirms the order was saved.
+    const waUrl=`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    if(waWindow){waWindow.location.href=waUrl;}else{window.location.href=waUrl;}
+    cart={};saveCart();closeCheckout();
+    document.getElementById('customer-note').value='';
+    showToast('অর্ডার Dashboard-এ সেভ হয়েছে ✓ WhatsApp-এ পাঠান');
+  }catch(err){
+    if(waWindow && !waWindow.closed)waWindow.close();
+    console.error('Order save failed',err);
+    showToast('অর্ডার Dashboard-এ সেভ হয়নি। Firestore Rules পরীক্ষা করে আবার চেষ্টা করুন।');
+    alert('অর্ডার Dashboard-এ সেভ করা যায়নি, তাই WhatsApp খোলা হয়নি। Firebase Rules-এ orders create permission যোগ করতে হবে।');
+  }finally{if(btn){btn.disabled=false;btn.classList.remove('opacity-60');}}
 }
 
 /* =========================================================
@@ -584,6 +641,18 @@ const mf=document.getElementById("messenger-float");
 if(messengerPage)mf.href=messengerPage;else mf.style.display="none";
 renderProducts();updateCartUI();
 if(db) loadProductsFromFirebase();
+
+// Private-entry convenience: open Admin Login only when the owner uses ?admin=1.
+// This URL flag is not security; Firebase Authentication + Firestore Rules enforce access.
+if (new URLSearchParams(window.location.search).get("admin") === "1") {
+  window.addEventListener("load", () => {
+    openAdmin();
+    // Remove the query flag from the address bar after opening the login modal.
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+    }
+  });
+}
 </script>
 </body>
 </html>
